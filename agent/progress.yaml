@@ -9,9 +9,9 @@ project:
 milestones:
   - id: M1
     title: Types, Constants & Errors
-    status: not_started
+    status: completed
     tasks_total: 5
-    tasks_completed: 0
+    tasks_completed: 5
     estimated_days: 4
     dependencies: []
 
@@ -67,31 +67,31 @@ tasks:
   milestone_1:
     - id: 1
       title: Branded IDs, common types & utility types
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-1-types-constants-errors/task-1-branded-ids-common-types.md
       estimated_hours: 3
       dependencies: []
     - id: 2
       title: Content entity types & refs hierarchy
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-1-types-constants-errors/task-2-content-entity-types.md
       estimated_hours: 4
       dependencies: [1]
     - id: 3
       title: Profile, post, feed, comment, search & auth types
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-1-types-constants-errors/task-3-domain-types.md
       estimated_hours: 6
       dependencies: [1, 2]
     - id: 4
       title: Firestore collection constants
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-1-types-constants-errors/task-4-collection-constants.md
       estimated_hours: 2
       dependencies: []
     - id: 5
       title: Error hierarchy & error codes
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-1-types-constants-errors/task-5-error-hierarchy.md
       estimated_hours: 3
       dependencies: [1]
@@ -260,21 +260,24 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 0
-  overall: 10
+  implementation: 17
+  overall: 27
 
 recent_work:
   - date: 2026-02-28
     items:
-      - "Completed full project planning: 7 milestones, 29 tasks"
-      - "Created 5 design documents (architecture, requirements, content-entity, search, config)"
-      - "Adopted @uid:{firebaseUid} semantic ID format (replacing @/{username})"
-      - "Installed core-sdk package with 30 patterns"
+      - "Completed M1: Types, Constants & Errors (5/5 tasks)"
+      - "T1: Branded IDs, common types, Result type with ok discriminant, utility types"
+      - "T4: 26 Firestore collection path constants with CollectionPath union type"
+      - "T5: Error hierarchy with code/httpStatus/kind, ErrorCode enum, 8 error classes"
+      - "T2: Three-tier refs hierarchy (6+23+7=36 arrays), entity interfaces"
+      - "T3: 8 domain type files (profile, post, feed, comment, search, auth, pagination)"
+      - "68 unit tests passing across 5 test suites"
 
 next_steps:
-  - "Start M1: Types, Constants & Errors with @acp.proceed"
-  - "Task 1 and Task 4 have no dependencies - can start in parallel"
-  - "Review milestone and task documents for completeness"
+  - "Start M2: Config & Infrastructure (Tasks 6-9)"
+  - "Start M3: Content Processing (Tasks 10-14) — can run parallel with M2"
+  - "Clean up scaffold files (examples/, shared.types.ts, user.service.ts)"
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest, manager notifications"
