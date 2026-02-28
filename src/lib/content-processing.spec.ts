@@ -1,4 +1,11 @@
-import { extractHashtags, extractMentions, extractUrls } from './content-processing';
+import {
+  extractHashtags,
+  extractMentions,
+  extractUrls,
+  categorizePost,
+  validatePostContent,
+  processPostContent,
+} from './content-processing';
 
 describe('extractHashtags', () => {
   it('should extract simple hashtags', () => {
@@ -120,5 +127,134 @@ describe('extractUrls', () => {
 
   it('should deduplicate URLs', () => {
     expect(extractUrls('https://a.com https://a.com')).toEqual(['https://a.com']);
+  });
+});
+
+describe('categorizePost', () => {
+  it('should categorize safety content', () => {
+    expect(categorizePost('Safety alert: suspicious activity on Main St')).toBe('safety');
+  });
+
+  it('should categorize events content', () => {
+    expect(categorizePost('Join us for a block party this Saturday!')).toBe('events');
+  });
+
+  it('should categorize recommendations content', () => {
+    expect(categorizePost('Can anyone recommend a good plumber?')).toBe('recommendations');
+  });
+
+  it('should categorize lost_found content', () => {
+    expect(categorizePost('Lost dog: brown labrador, last seen near the park')).toBe('lost_found');
+  });
+
+  it('should return general for unclassified content', () => {
+    expect(categorizePost('Beautiful sunset this evening')).toBe('general');
+  });
+
+  it('should return general for empty content', () => {
+    expect(categorizePost('')).toBe('general');
+  });
+
+  it('should be case-insensitive', () => {
+    expect(categorizePost('SAFETY ALERT')).toBe('safety');
+  });
+});
+
+describe('validatePostContent', () => {
+  it('should accept valid post content', () => {
+    const result = validatePostContent({
+      title: 'Test Post',
+      content: 'Hello world',
+      isPublic: true,
+    });
+    expect(result.ok).toBe(true);
+  });
+
+  it('should reject empty content', () => {
+    const result = validatePostContent({
+      title: 'Test',
+      content: '',
+      isPublic: true,
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it('should reject content exceeding max length', () => {
+    const result = validatePostContent({
+      title: 'Test',
+      content: 'a'.repeat(10001),
+      isPublic: true,
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it('should reject too many media items', () => {
+    const result = validatePostContent({
+      title: 'Test',
+      content: 'Hello',
+      isPublic: true,
+      media: Array(11).fill({ url: 'https://example.com/image.jpg', type: 'image' }),
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it('should reject title exceeding max length', () => {
+    const result = validatePostContent({
+      title: 'a'.repeat(201),
+      content: 'Hello',
+      isPublic: true,
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it('should trim content in validated result', () => {
+    const result = validatePostContent({
+      title: 'Test',
+      content: '  Hello world  ',
+      isPublic: true,
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.content).toBe('Hello world');
+    }
+  });
+});
+
+describe('processPostContent', () => {
+  it('should return complete ProcessedContent', () => {
+    const result = processPostContent({
+      title: 'Safety Alert #alert',
+      content: 'Warning about theft on Main St @alice https://example.com',
+      isPublic: true,
+    });
+
+    expect(result.hashtags).toEqual(['alert']);
+    expect(result.mentions).toEqual(['alice']);
+    expect(result.urls).toEqual(['https://example.com']);
+    expect(result.category).toBe('safety');
+  });
+
+  it('should combine title and content for extraction', () => {
+    const result = processPostContent({
+      title: '#title-tag',
+      content: '#body-tag',
+      isPublic: true,
+    });
+
+    expect(result.hashtags).toContain('title-tag');
+    expect(result.hashtags).toContain('body-tag');
+  });
+
+  it('should handle content with no extractable items', () => {
+    const result = processPostContent({
+      title: 'Just a post',
+      content: 'Nothing special here',
+      isPublic: false,
+    });
+
+    expect(result.hashtags).toEqual([]);
+    expect(result.mentions).toEqual([]);
+    expect(result.urls).toEqual([]);
+    expect(result.category).toBe('general');
   });
 });
