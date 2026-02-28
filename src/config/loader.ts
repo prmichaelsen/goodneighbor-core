@@ -1,74 +1,96 @@
 // src/config/loader.ts
-// Pattern: Config Loading (core-sdk.config-loading.md)
+// Loads and validates application configuration from environment variables.
 
-import { AppConfigSchema, AppConfig } from './schema';
+import { GoodNeighborConfigSchema, type GoodNeighborConfig } from './schema';
 
 /**
- * Load and validate application configuration.
+ * Loads and validates application configuration from environment variables.
  *
- * Priority order (highest wins):
- *   1. Environment variables
- *   2. Config object / file content (caller's responsibility to load YAML/JSON)
- *   3. Schema defaults
+ * Maps the following environment variables to the GoodNeighborConfig shape:
+ *   NODE_ENV -> app.env
+ *   APP_NAME -> app.appName
+ *   APP_URL -> app.appUrl
+ *   FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY -> firebase.serviceAccountKey
+ *   ALGOLIA_APPLICATION_ID -> algolia.appId
+ *   ALGOLIA_ADMIN_API_KEY -> algolia.adminApiKey
+ *   ALGOLIA_SEARCH_API_KEY -> algolia.searchApiKey
+ *   ALGOLIA_INDEX_NAME -> algolia.indexName
+ *   MANDRILL_API_KEY -> email.mandrillApiKey
+ *   SUPPORT_EMAIL -> email.supportEmail
+ *   EMAIL_FROM_NAME -> email.fromName
+ *   SESSION_DURATION_DAYS -> auth.sessionDurationDays (parsed as integer)
  *
- * Throws a ZodError with a detailed message if validation fails.
- * Call once at startup before any services are initialized.
- *
- * @example
- * const raw = JSON.parse(readFileSync('./config/production.json', 'utf-8'));
- * const config = loadConfig(raw);
+ * @param envOverrides - Optional overrides for environment variables (useful for testing)
+ * @returns Validated GoodNeighborConfig
+ * @throws ZodError if required variables are missing or validation fails
  */
-export function loadConfig(raw: unknown = {}): AppConfig {
-  const env = process.env;
+export function loadConfig(
+  envOverrides?: Partial<Record<string, string>>,
+): GoodNeighborConfig {
+  const env = { ...process.env, ...envOverrides };
 
-  // Merge environment variable overrides on top of raw config
-  const merged = deepMerge(raw as Record<string, unknown>, {
-    env: env.NODE_ENV,
-    database: {
-      host:     env.DB_HOST,
-      port:     env.DB_PORT     ? parseInt(env.DB_PORT)     : undefined,
-      name:     env.DB_NAME,
-      user:     env.DB_USER,
-      password: env.DB_PASSWORD,
-    },
-    server: {
-      port:    env.PORT        ? parseInt(env.PORT)        : undefined,
-      host:    env.SERVER_HOST,
-    },
-    logging: {
-      level:  env.LOG_LEVEL,
-      format: env.LOG_FORMAT,
-    },
-  });
+  // Only pass NODE_ENV if it's a recognized value; otherwise let the Zod default apply.
+  // This avoids conflicts with frameworks that set NODE_ENV to values like "test".
+  const VALID_ENVS = ['development', 'staging', 'production'];
+  const nodeEnv = env.NODE_ENV && VALID_ENVS.includes(env.NODE_ENV)
+    ? env.NODE_ENV
+    : undefined;
 
-  // Parse validates and applies schema defaults
-  return AppConfigSchema.parse(merged);
+  const raw = {
+    app: {
+      env: nodeEnv,
+      appName: env.APP_NAME,
+      appUrl: env.APP_URL,
+    },
+    firebase: {
+      serviceAccountKey: env.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY,
+    },
+    algolia: {
+      appId: env.ALGOLIA_APPLICATION_ID,
+      adminApiKey: env.ALGOLIA_ADMIN_API_KEY,
+      searchApiKey: env.ALGOLIA_SEARCH_API_KEY,
+      indexName: env.ALGOLIA_INDEX_NAME,
+    },
+    email: {
+      mandrillApiKey: env.MANDRILL_API_KEY,
+      supportEmail: env.SUPPORT_EMAIL,
+      fromName: env.EMAIL_FROM_NAME,
+    },
+    auth: {
+      sessionDurationDays: env.SESSION_DURATION_DAYS
+        ? parseInt(env.SESSION_DURATION_DAYS, 10)
+        : undefined,
+    },
+  };
+
+  return GoodNeighborConfigSchema.parse(raw);
 }
 
 /**
- * Deep merge two plain objects, omitting undefined values from the source.
- * Source values take priority over target values.
+ * Returns a valid GoodNeighborConfig with hardcoded test values.
+ * Requires no environment variables.
  */
-function deepMerge(
-  target: Record<string, unknown>,
-  source: Record<string, unknown>
-): Record<string, unknown> {
-  const result = { ...target };
-  for (const [key, value] of Object.entries(source)) {
-    if (value === undefined || value === null) continue;
-    if (
-      typeof value === 'object' &&
-      !Array.isArray(value) &&
-      typeof target[key] === 'object' &&
-      target[key] !== null
-    ) {
-      result[key] = deepMerge(
-        target[key] as Record<string, unknown>,
-        value as Record<string, unknown>
-      );
-    } else {
-      result[key] = value;
-    }
-  }
-  return result;
+export function loadTestConfig(): GoodNeighborConfig {
+  return GoodNeighborConfigSchema.parse({
+    app: {
+      env: 'development',
+      appName: 'goodneighbor-test',
+      appUrl: 'http://localhost:3000',
+    },
+    firebase: {
+      serviceAccountKey: '{"type":"service_account","project_id":"test-project"}',
+    },
+    algolia: {
+      appId: 'test-app-id',
+      adminApiKey: 'test-admin-key',
+      searchApiKey: 'test-search-key',
+      indexName: 'goodneighbor_test',
+    },
+    email: {
+      supportEmail: 'test@example.com',
+    },
+    auth: {
+      sessionDurationDays: 1,
+    },
+  });
 }
