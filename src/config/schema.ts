@@ -1,82 +1,85 @@
 // src/config/schema.ts
-// Pattern: Configuration Types (core-sdk.types-config.md) + Config Schema (core-sdk.config-schema.md)
+// Zod config schemas for goodneighbor-core
 
 import { z } from 'zod';
-import { DeepPartial } from '../types/utils.types';
 
-// ─── Sub-schemas ──────────────────────────────────────────────────────────
-
-export const DatabaseConfigSchema = z.object({
-  host: z.string().default('localhost'),
-  port: z.number().int().min(1).max(65535).default(5432),
-  name: z.string(),
-  user: z.string(),
-  password: z.string(),
-  ssl: z.boolean().default(false),
-  poolMin: z.number().int().default(2),
-  poolMax: z.number().int().default(10),
-});
-
-export const ServerConfigSchema = z.object({
-  port: z.number().int().default(3000),
-  host: z.string().default('0.0.0.0'),
-  corsOrigins: z.array(z.string()).default([]),
-  requestTimeoutMs: z.number().int().default(30_000),
-});
-
-export const LoggingConfigSchema = z.object({
-  level: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
-  format: z.enum(['json', 'pretty']).default('json'),
-});
-
-export const AppConfigSchema = z.object({
-  env: z.enum(['development', 'staging', 'production']).default('development'),
-  database: DatabaseConfigSchema,
-  server: ServerConfigSchema,
-  logging: LoggingConfigSchema,
-});
-
-// ─── Derived Types ─────────────────────────────────────────────────────────
-// Always derived from schema — never written manually.
-
-export type DatabaseConfig = z.infer<typeof DatabaseConfigSchema>;
-export type ServerConfig   = z.infer<typeof ServerConfigSchema>;
-export type LoggingConfig  = z.infer<typeof LoggingConfigSchema>;
-export type AppConfig      = z.infer<typeof AppConfigSchema>;
-
-// ─── Layer-Scoped Config Slices ────────────────────────────────────────────
-// Each layer receives only the config sections it needs.
-
-/** Config shape for service layer (database + logging) */
-export type ServiceConfig = Pick<AppConfig, 'database' | 'logging'>;
-
-/** Config shape for adapter layer (server + logging) */
-export type AdapterConfig = Pick<AppConfig, 'server' | 'logging'>;
-
-// ─── Test Helper ──────────────────────────────────────────────────────────
+// ─── Section Schemas ─────────────────────────────────────────────────────
 
 /**
- * Create a complete AppConfig with test defaults and optional overrides.
- * Use in test files to avoid repeating boilerplate.
- *
- * @example
- * const config = createTestConfig({ database: { port: 5433 } });
+ * Application-level configuration.
+ * Controls environment mode, app identity, and base URL.
  */
-export function createTestConfig(
-  overrides: DeepPartial<AppConfig> = {}
-): AppConfig {
-  const base = AppConfigSchema.parse({
-    env: 'development',
-    database: {
-      host: 'localhost',
-      port: 5432,
-      name: 'test_db',
-      user: 'test',
-      password: 'test',
-    },
-    server: {},
-    logging: { level: 'error', format: 'pretty' },
-    ...overrides,
-  });
-  return base;
-}
+export const AppConfigSchema = z.object({
+  env: z.enum(['development', 'staging', 'production']).default('development'),
+  appName: z.string().default('goodneighbor'),
+  appUrl: z.string().url(),
+});
+
+/**
+ * Firebase Admin SDK configuration.
+ * The serviceAccountKey is a JSON string containing the Firebase service account credentials.
+ */
+export const FirebaseConfigSchema = z.object({
+  serviceAccountKey: z.string().min(1, 'FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY is required'),
+});
+
+/**
+ * Algolia search client configuration.
+ * Supports both admin (write) and search (read-only) API keys.
+ */
+export const AlgoliaConfigSchema = z.object({
+  appId: z.string().min(1, 'ALGOLIA_APPLICATION_ID is required'),
+  adminApiKey: z.string().min(1, 'ALGOLIA_ADMIN_API_KEY is required'),
+  searchApiKey: z.string().min(1, 'ALGOLIA_SEARCH_API_KEY is required'),
+  indexName: z.string().default('goodneighbor_search'),
+});
+
+/**
+ * Email (Mandrill) configuration.
+ * The mandrillApiKey is optional -- when absent, email sending falls back to debug capture.
+ */
+export const EmailConfigSchema = z.object({
+  mandrillApiKey: z.string().optional(),
+  supportEmail: z.string().email().default('support@goodneighbor.com'),
+  fromName: z.string().default('Good Neighbor'),
+});
+
+/**
+ * Authentication configuration.
+ * Controls session behavior for Firebase Auth.
+ */
+export const AuthConfigSchema = z.object({
+  sessionDurationDays: z.number().int().min(1).max(30).default(14),
+});
+
+/**
+ * Composite configuration schema combining all sections.
+ * Validated at startup via loadConfig().
+ */
+export const GoodNeighborConfigSchema = z.object({
+  app: AppConfigSchema,
+  firebase: FirebaseConfigSchema,
+  algolia: AlgoliaConfigSchema,
+  email: EmailConfigSchema,
+  auth: AuthConfigSchema,
+});
+
+// ─── Inferred TypeScript Types ───────────────────────────────────────────
+
+/** Full application configuration */
+export type GoodNeighborConfig = z.infer<typeof GoodNeighborConfigSchema>;
+
+/** Application-level config section */
+export type AppConfig = z.infer<typeof AppConfigSchema>;
+
+/** Firebase config section */
+export type FirebaseConfig = z.infer<typeof FirebaseConfigSchema>;
+
+/** Algolia config section */
+export type AlgoliaConfig = z.infer<typeof AlgoliaConfigSchema>;
+
+/** Email config section */
+export type EmailConfig = z.infer<typeof EmailConfigSchema>;
+
+/** Auth config section */
+export type AuthConfig = z.infer<typeof AuthConfigSchema>;
