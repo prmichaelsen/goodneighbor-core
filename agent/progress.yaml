@@ -25,9 +25,9 @@ milestones:
 
   - id: M3
     title: Content Processing & Entity Builders
-    status: not_started
+    status: completed
     tasks_total: 5
-    tasks_completed: 0
+    tasks_completed: 5
     estimated_days: 4
     dependencies: [M1]
 
@@ -125,31 +125,31 @@ tasks:
   milestone_3:
     - id: 10
       title: Content extraction functions
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-3-content-processing/task-10-content-extraction.md
       estimated_hours: 3
       dependencies: [1]
     - id: 11
       title: Content categorization & validation
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-3-content-processing/task-11-categorization-validation.md
       estimated_hours: 3
       dependencies: [10]
     - id: 12
       title: Post creators (buildPostRefs, createPostEntity)
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-3-content-processing/task-12-post-creators.md
       estimated_hours: 3
       dependencies: [2, 11]
     - id: 13
       title: Feed creators (createFeedEntity)
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-3-content-processing/task-13-feed-creators.md
       estimated_hours: 2
       dependencies: [12]
     - id: 14
       title: Post & feed mappers
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-3-content-processing/task-14-entity-mappers.md
       estimated_hours: 3
       dependencies: [2, 3]
@@ -260,24 +260,26 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 31
-  overall: 38
+  implementation: 48
+  overall: 52
 
 recent_work:
   - date: 2026-02-28
     items:
       - "Completed M1: Types, Constants & Errors (5/5 tasks)"
       - "Completed M2: Config & Infrastructure (4/4 tasks)"
-      - "T6: Zod config schemas (5 sections + composite GoodNeighborConfigSchema)"
-      - "T7: loadConfig() maps 12 env vars, Secret<T> class, loadTestConfig()"
-      - "T8: Firebase Admin singleton init with getAuth/getFirestore/getStorage"
-      - "T9: Algolia admin/search client factories, end-to-end config integration test"
-      - "112 unit tests passing across 11 test suites"
+      - "Completed M3: Content Processing & Entity Builders (5/5 tasks)"
+      - "T10: extractHashtags, extractMentions, extractUrls"
+      - "T11: categorizePost, validatePostContent, processPostContent pipeline"
+      - "T12: buildPostRefs (29 ContentEntityRefs), createPostEntity"
+      - "T13: createFeedEntity with FeedEntityRefs (36 fields)"
+      - "T14: mapDbPostToViewModel, mapDbFeedToViewModel, mapDbFeedSubmissionToViewModel"
+      - "238 unit tests passing across 16 test suites"
 
 next_steps:
-  - "Start M3: Content Processing (Tasks 10-14)"
   - "Start M4: Search Service (Tasks 15-17) — depends on M1+M2"
   - "Start M6: Notification & I18n (Tasks 23-25) — depends on M1+M2"
+  - "M5: Core Services (Tasks 18-22) — depends on M1+M2+M3+M4"
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest, manager notifications"
