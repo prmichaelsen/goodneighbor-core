@@ -1,7 +1,424 @@
-# ACP Package Manifest
-# Tracks installed packages and their versions
-
 packages:
+  core-sdk:
+    source: https://github.com/prmichaelsen/acp-core-sdk.git
+    package_version: 1.22.0
+    commit: 98345a1aae1cdba3bac6098a0bbbec7128a48cf2
+    installed_at: 2026-02-28T19:34:02Z
+    updated_at: 2026-02-28T19:34:02Z
+    files:
+      patterns:
+        - name: core-sdk.types-shared.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:99b7fed7acbdcaf64bd077a608c7371b4707766d0843ae6e0dc766dd6460e290
+        - name: core-sdk.types-result.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:8f7c7da654446597060861fb24fcc3ceee2de5bb00459a906d368f19a089a895
+        - name: core-sdk.types-generic.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:489c36931b33a1f8a336abf58e0921382dba060ac629bcbb805ece4f3d0546f5
+        - name: core-sdk.types-error.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:31913371e55327dcef66a61b5ecfe95146bf60824ab30087d76cdfb26a827d14
+        - name: core-sdk.types-config.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:c3bec232be582c39afed8e01c8fa09fca42d1cc203e6639021ea6bfb2154c17e
+        - name: core-sdk.testing-unit.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:64e625db8657415319cbfb10096be38e75a14fbbe37c121db0eb2849de93be19
+        - name: core-sdk.testing-mocks.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:dd5aed995c5f286fb9786cd1715cd1304b202dfee8f8cc66fe9f23dd537103f6
+        - name: core-sdk.testing-integration.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:1005a5b53ff8d40ad2736ae45e0836081bb899dd12d8a490d09709b41c5ad39e
+        - name: core-sdk.testing-fixtures.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:3eae1e4ef9bc98d9313dffab502b5d34050272725c79d995b13399c620d49f38
+        - name: core-sdk.testing-coverage.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:9ab09ba6bd8995c350c21a2f8e0aa4d4bc7660375232b4ad7120847e6e8b9515
+        - name: core-sdk.service-logging.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:33f3658b9df4b37a4eda901b2144136afb7bef0b5ea19837fc082eb87d79c71a
+        - name: core-sdk.service-interface.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:fb05113e5ad07d7b8e7b5518577aa372a73a2d4d6562bfa2d03cb616e33e1904
+        - name: core-sdk.service-error-handling.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:6abfe6ee744aff20c919e922dbdfc016b637e39afca1ea42ae44ed3927a1f8a6
+        - name: core-sdk.service-container.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:bfbb639621a496cf97caff0b4754c9946dc07452a8d2a15a0112fd859bbc9a18
+        - name: core-sdk.service-base.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:8d85acf4312e698959eadba148135bb5d80f4b4bdc23bdecb929cb19aba44a42
+        - name: core-sdk.config-secrets.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:ff19dab3b5257f0380089a9190ec420a0cf1fb0910ba8efa544e44fe6a4f91a1
+        - name: core-sdk.config-schema.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:0f35d340f8f1b2f25b0ac03562e666f4ca844e45c3539706a98ac938b362bedf
+        - name: core-sdk.config-multi-env.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:15004525079aa7cb0489e105ece54d6bc1093bf0f89256ac282037bcd938ef40
+        - name: core-sdk.config-loading.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:71918c51c5e44a373d7ba508c0c6b9f668679b77332f065f83414724d8b9dc4c
+        - name: core-sdk.config-environment.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:b7fae8b4aa7f70c3cd8b4495fafdc13a3fd0ece0cd992cd760b01c13ca1442d3
+        - name: core-sdk.client-type-generation.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:d5b7d6af4a88aef0ba6af2c5587aba0fee917f42592350b45123ce246d092926
+        - name: core-sdk.client-svc.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:191bfdee9669d1d1d67840ff15a0d451508fa1abad50fd18f0854175787cfc48
+        - name: core-sdk.client-response.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:5a485b252dcb1813a37692db5b17d8979c71adde207be32e62b62d543574ce51
+        - name: core-sdk.client-http-transport.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:e2b3322c9734b6b28360dad90cecf67e3f06d691b50b3799128e8f17ca8301d6
+        - name: core-sdk.client-app.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:a818831881cadf82e8c5ac0a7ac126786ae70eca2e1fa3dbe23994abc47f273a
+        - name: core-sdk.adapter-rest.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:cfb55f4be7bfbb66c5e827131ff62d551eac0401514e16e66f8a43a7708c09f9
+        - name: core-sdk.adapter-mcp.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:42e70cccba26d1f8ddd1712f375ca3dfc45cf6f146b79caeb7b768435970e4cb
+        - name: core-sdk.adapter-client.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:895aae85bfeab5c03f703e03ca433072a05fa3f2f97027fd1257f46e4dfebe19
+        - name: core-sdk.adapter-cli.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:b3d94aaea86225be616f80bdcaabe3020c72a67d9605a2af698f4439634dd35b
+        - name: core-sdk.adapter-base.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:f13e1a69e014836f482bea589106cc2c4e836e0cb9486e4fecb39c705f52e9f3
+      commands:
+        - name: git.init.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:2cd8bef13ba0278c3c3389631835aa4663a82c324bbb894aabd4299bb2370d53
+        - name: git.commit.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:96249dee1a09f941f8ca2f072b53c90fa21fc34505fca4999d7c0c02982b3d02
+      designs:
+        - name: core-sdk.architecture.md
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:15a2cb316379dd94c544abcea91436eb7242b39aacac932e3eb36ac9dc5475a5
+      scripts:
+        - name: bootstrap.sh
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:unknown
+      files:
+        - name: config/package.json.template
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:314018f38fb17906ee0c9f0d854d6220ce2bcdf8866a79f4c51643fcabf3521c
+          target: ./package.json
+          variables:
+            PACKAGE_NAME: goodneighbor-core
+            PACKAGE_DESCRIPTION: Core library for Good Neighbor platform
+            AUTHOR_NAME: Patrick Michaelsen
+        - name: config/tsconfig.json
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:3fb124c67224bdde261d3e15c1f5d742f72ab4bcae6ee04077383ff31979bf39
+          target: ./tsconfig.json
+        - name: config/jest.config.js
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:92e09e4f9669ce0d7442225405e933bc4b13e00a06a1ed06db4887bbc8044a79
+          target: ./jest.config.js
+        - name: config/esbuild.build.js
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:a74765ee34ef353ee22db770abb077d40e4773a78ebfd7b22da8a4e92553ece1
+          target: ./esbuild.build.js
+        - name: config/esbuild.watch.js
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:00c7ebb9bd0d762106dd8c3cccaba99ddfc6708d4608f17b912550d0af692a52
+          target: ./esbuild.watch.js
+        - name: config/gitignore.template
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:0e9eb41cf9e80b05ecb9403d8184fe8ff38e153cb4fc03a44d2b9de901935d78
+          target: ./.gitignoregitignore
+        - name: config/npmignore.template
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:30b311e2c55f0b3c9370fa10a68a7a6d26e5e16385a0ac0f3f6d7f8752f5b177
+          target: ./.npmignorenpmignore
+        - name: src/types/result.types.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:f23b353aab95b1ca1c444ec2114bcb41789b0ce2d40fbfa266f66c8231f6a7a4
+          target: src/types/result.types.ts
+        - name: src/types/utils.types.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:b3da13c8e5d2dfa154b97d11d04febb14f48cfd3857079abda73e5a1d4b44f96
+          target: src/types/utils.types.ts
+        - name: src/types/shared.types.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:8cb7af75307d5ed022719a92ecaef41841d72afb2281a51e4fcdd7ef46c2d4bb
+          target: src/types/shared.types.ts
+        - name: src/types/index.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:737bbb517996d946fedc0ce3c36750238432006b9bf7c8720db536d2c999b520
+          target: src/types/index.ts
+        - name: src/errors/base.error.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:c0b11a070e6723502d158d371be9181f312363b5f7931deed6b14079d0ec0033
+          target: src/errors/base.error.ts
+        - name: src/errors/app-errors.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:931012d60f43974418f060b66ae453f5a2c6ff0a9c24bdba7c8a51e16bd1c897
+          target: src/errors/app-errors.ts
+        - name: src/errors/index.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:867f1d44d3f832057290052877389058b0c1c273d4445f1b3f39e659d5f1dc8f
+          target: src/errors/index.ts
+        - name: src/config/schema.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:987e7c309f732abf180f473c11b04096c5b1993ff7b89f785c5963bd4500be10
+          target: src/config/schema.ts
+        - name: src/config/loader.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:547ec983544ef881febc479ea89130af6c9c59c871f7b9c3049561e1145b7c25
+          target: src/config/loader.ts
+        - name: src/config/index.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:81b5922cd3cc5831fec9598a6e2575fde50411b2278b1f83d568bd4af0d227b4
+          target: src/config/index.ts
+        - name: src/services/base.service.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:44e5317b88105180f8392635798e47c947964f2d958075a9899621698024ea92
+          target: src/services/base.service.ts
+        - name: src/services/user.service.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:aa1ef0519558daa9c998af49d26ac2eb4ccaa7ed02b51c11dd58e17bf0705b90
+          target: src/services/user.service.ts
+        - name: src/services/user.service.spec.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:01470890045d9f5e4562495d44276241aca19fadda3e927da916ae4c17a67f36
+          target: src/services/user.service.spec.ts
+        - name: src/services/index.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:41e4aea3d9d609a1fe009ba12cfd697176183b0ca4cf572ded5fc9302deba5c1
+          target: src/services/index.ts
+        - name: src/client/user.client.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:3f9c238db273f203f9f3af03190ab61a2cc3789e176493a84ad9cf089c01cf6c
+          target: src/client/user.client.ts
+        - name: src/client/index.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:1a3d21309c4ca171daa947003cf23ee8888f1080e12292d85d88671861fa24df
+          target: src/client/index.ts
+        - name: examples/rest/server.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:7e2c3e2bdb78eeece450fd392d7a8fd3caf1bf997f8cc0cef6ed6c9d64163b1d
+          target: examples/rest/server.ts
+        - name: examples/rest/user.routes.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:df67b7f001921152df89896993ebc6b1dc9daef2788982baaf04902c5e6fe7f1
+          target: examples/rest/user.routes.ts
+        - name: examples/rest/error-handler.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:49b78a358816345509c551b62beb36bf233ec5e5cdb0caa8f753a4035ea5c007
+          target: examples/rest/error-handler.ts
+        - name: examples/rest/client-usage.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:4fde6f5bbb7b2e838677532447c3fa96c76dc2c7986b07e0c4d603cf574a9b81
+          target: examples/rest/client-usage.ts
+        - name: examples/mcp/server.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:e8585cd734c38ce2fa904a4884d9fffffad88950972f74a8288c4a2360144b1b
+          target: examples/mcp/server.ts
+        - name: examples/mcp/user.tools.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:4d9cc4b3acca7dd6e8d4eac60034e2f481e93fb6c68a751531ef4edc0f69f425
+          target: examples/mcp/user.tools.ts
+        - name: examples/cli/program.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:cceeb6de62d68c81eee140251fda81fb65543c48d6643e5d21d327648edfcbf2
+          target: examples/cli/program.ts
+        - name: examples/cli/user.commands.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:733bd1ff1aaeb43adb14a24f402c60c92f13185b61ada29003823fecfc0cc75d
+          target: examples/cli/user.commands.ts
+        - name: examples/test/user.repository.mock.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:4143038e8742a25b2d38b06a07d52a502279d3648396367923302391b4325c3a
+          target: examples/test/user.repository.mock.ts
+        - name: examples/test/rest.integration.spec.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:28b43a7f2963b903f84f36f8e459da8d1c692981d648dc14faac4a921070d479
+          target: examples/test/rest.integration.spec.ts
+        - name: examples/test/mcp.integration.spec.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:37d569550b8df14ff70c0f611c5c242903e6f2d5c5c139fd3f2e033d4cb66a4d
+          target: examples/test/mcp.integration.spec.ts
+        - name: examples/test/cli.integration.spec.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:cd2843ff2837d8cca83e72216f39cd0f03532a990ac00ad5452497ee0b434a7c
+          target: examples/test/cli.integration.spec.ts
+        - name: examples/test/helpers.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:04f029e33b21a8084fe97586a5c87045800a7e9b3fc620479fc8111974025d7b
+          target: examples/test/helpers.ts
+        - name: src/testing/fixtures.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:2f5a6be0d26ae563fd0189d9039dbba00c4bcfdb84ada6a3c4c7e91fffc4b88b
+          target: src/testing/fixtures.ts
+        - name: src/testing/helpers.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:327b58d277c2ca35eebef878a6a19d403542af4c587092dfd0e6a7fcc757943a
+          target: src/testing/helpers.ts
+        - name: src/testing/index.ts
+          version: 0.0.0
+          installed_at: 2026-02-28T19:34:07Z
+          modified: false
+          checksum: sha256:a0016c14a78dbbb5d90e292fee8fe9a13dcaf93637e08b66944fa597bac40cd7
+          target: src/testing/index.ts
   acp-core:
     source: https://github.com/prmichaelsen/agent-context-protocol.git
     package_version: 5.3.1
@@ -50,6 +467,5 @@ packages:
       designs:
         - name: design.template.md
         - name: requirements.template.md
-
 manifest_version: 1.0.0
-last_updated: 2026-02-28T19:14:45Z
+last_updated: 2026-02-28T19:34:02Z
