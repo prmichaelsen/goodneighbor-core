@@ -11,8 +11,12 @@ export interface CreateFeedDto {
   description: string;
   subtype: FeedSubtype;
   rules?: string[];
+  tags?: string[];
   isPublic?: boolean;
   parentFeed?: string;
+  submissionModels?: string[];
+  approvalModels?: string[];
+  ownershipModels?: string[];
 }
 
 /**
