@@ -14,9 +14,10 @@ lib/
 .env.local
 .env.*.local
 
-# IDE
+# IDE & tools
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
