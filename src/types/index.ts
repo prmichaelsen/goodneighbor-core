@@ -36,6 +36,26 @@ export {
   tryCatchAsync,
 } from './result.types';
 
+// Content entity types & refs hierarchy
+export type {
+  SearchEntityType,
+  FeedSubtype,
+  FeedSubmissionStatus,
+  SearchEntityRefs,
+  ContentEntityRefs,
+  FeedEntityRefs,
+  SearchEntity,
+  ContentEntityProperties,
+  EntityStats,
+  ContentEntity,
+  DbPost,
+  FeedProperties,
+  FeedBehavior,
+  AggregationRule,
+  DbFeed,
+  DbFeedSubmission,
+} from './content-entity.types';
+
 // Generic utilities
 export type {
   DeepPartial,
