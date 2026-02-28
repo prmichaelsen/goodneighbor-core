@@ -17,9 +17,9 @@ milestones:
 
   - id: M2
     title: Config & Infrastructure
-    status: not_started
+    status: completed
     tasks_total: 4
-    tasks_completed: 0
+    tasks_completed: 4
     estimated_days: 3
     dependencies: [M1]
 
@@ -99,25 +99,25 @@ tasks:
   milestone_2:
     - id: 6
       title: Zod config schemas
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-2-config-infrastructure/task-6-zod-config-schemas.md
       estimated_hours: 3
       dependencies: [1]
     - id: 7
       title: Config loader & Secret class
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-2-config-infrastructure/task-7-config-loader-secrets.md
       estimated_hours: 3
       dependencies: [6]
     - id: 8
       title: Firebase Admin initialization
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-2-config-infrastructure/task-8-firebase-init.md
       estimated_hours: 2
       dependencies: [7]
     - id: 9
       title: Algolia client initialization & test config
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-2-config-infrastructure/task-9-algolia-init-test-config.md
       estimated_hours: 2
       dependencies: [7]
@@ -260,24 +260,24 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 17
-  overall: 27
+  implementation: 31
+  overall: 38
 
 recent_work:
   - date: 2026-02-28
     items:
       - "Completed M1: Types, Constants & Errors (5/5 tasks)"
-      - "T1: Branded IDs, common types, Result type with ok discriminant, utility types"
-      - "T4: 26 Firestore collection path constants with CollectionPath union type"
-      - "T5: Error hierarchy with code/httpStatus/kind, ErrorCode enum, 8 error classes"
-      - "T2: Three-tier refs hierarchy (6+23+7=36 arrays), entity interfaces"
-      - "T3: 8 domain type files (profile, post, feed, comment, search, auth, pagination)"
-      - "68 unit tests passing across 5 test suites"
+      - "Completed M2: Config & Infrastructure (4/4 tasks)"
+      - "T6: Zod config schemas (5 sections + composite GoodNeighborConfigSchema)"
+      - "T7: loadConfig() maps 12 env vars, Secret<T> class, loadTestConfig()"
+      - "T8: Firebase Admin singleton init with getAuth/getFirestore/getStorage"
+      - "T9: Algolia admin/search client factories, end-to-end config integration test"
+      - "112 unit tests passing across 11 test suites"
 
 next_steps:
-  - "Start M2: Config & Infrastructure (Tasks 6-9)"
-  - "Start M3: Content Processing (Tasks 10-14) — can run parallel with M2"
-  - "Clean up scaffold files (examples/, shared.types.ts, user.service.ts)"
+  - "Start M3: Content Processing (Tasks 10-14)"
+  - "Start M4: Search Service (Tasks 15-17) — depends on M1+M2"
+  - "Start M6: Notification & I18n (Tasks 23-25) — depends on M1+M2"
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest, manager notifications"
