@@ -33,9 +33,9 @@ milestones:
 
   - id: M4
     title: Search Service
-    status: not_started
+    status: completed
     tasks_total: 3
-    tasks_completed: 0
+    tasks_completed: 3
     estimated_days: 4
     dependencies: [M1, M2]
 
@@ -157,19 +157,19 @@ tasks:
   milestone_4:
     - id: 15
       title: AlgoliaFilters builder class
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-4-search-service/task-15-algolia-filters.md
       estimated_hours: 4
       dependencies: [1]
     - id: 16
       title: SearchService implementation
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-4-search-service/task-16-search-service.md
       estimated_hours: 4
       dependencies: [5, 9, 15]
     - id: 17
       title: Algolia index configuration
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-4-search-service/task-17-index-configuration.md
       estimated_hours: 2
       dependencies: [16]
@@ -260,26 +260,23 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 48
-  overall: 52
+  implementation: 59
+  overall: 62
 
 recent_work:
   - date: 2026-02-28
     items:
-      - "Completed M1: Types, Constants & Errors (5/5 tasks)"
-      - "Completed M2: Config & Infrastructure (4/4 tasks)"
-      - "Completed M3: Content Processing & Entity Builders (5/5 tasks)"
-      - "T10: extractHashtags, extractMentions, extractUrls"
-      - "T11: categorizePost, validatePostContent, processPostContent pipeline"
-      - "T12: buildPostRefs (29 ContentEntityRefs), createPostEntity"
-      - "T13: createFeedEntity with FeedEntityRefs (36 fields)"
-      - "T14: mapDbPostToViewModel, mapDbFeedToViewModel, mapDbFeedSubmissionToViewModel"
-      - "238 unit tests passing across 16 test suites"
+      - "Completed M4: Search Service (3/3 tasks)"
+      - "T15: AlgoliaFilters fluent builder with insertion-order preservation"
+      - "T16: SearchService with v5 Algolia API, permission injection, Result errors"
+      - "T17: ALGOLIA_INDEX_SETTINGS constant (facets, ranking, typo tolerance)"
+      - "Adapted task docs from Algolia v4 (initIndex) to v5 (searchSingleIndex, saveObject)"
+      - "310 unit tests passing across 18 test suites"
 
 next_steps:
-  - "Start M4: Search Service (Tasks 15-17) — depends on M1+M2"
-  - "Start M6: Notification & I18n (Tasks 23-25) — depends on M1+M2"
-  - "M5: Core Services (Tasks 18-22) — depends on M1+M2+M3+M4"
+  - "Start M5: Core Services (Tasks 18-22) — depends on M1+M2+M3+M4 (all complete)"
+  - "Start M6: Notification & I18n (Tasks 23-25) — depends on M1+M2 (all complete)"
+  - "M7: ServiceContainer, Build & Publish — depends on all above"
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest, manager notifications"
