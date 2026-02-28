@@ -64,3 +64,18 @@ export type Constructor<T = object, Args extends any[] = any[]> = new (...args: 
 export type Immutable<T> = {
   readonly [K in keyof T]: T[K] extends object ? Immutable<T[K]> : T[K];
 };
+
+/**
+ * Extracts the keys of T whose values extend V
+ */
+export type KeysOfType<T, V> = {
+  [K in keyof T]: T[K] extends V ? K : never;
+}[keyof T];
+
+/**
+ * Timestamp fields common to most entities
+ */
+export interface Timestamps {
+  createdAt: string;
+  updatedAt: string;
+}

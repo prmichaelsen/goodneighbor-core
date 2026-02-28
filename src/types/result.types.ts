@@ -5,7 +5,7 @@
  * Represents a successful result containing a value of type T
  */
 export interface Ok<T> {
-  readonly success: true;
+  readonly ok: true;
   readonly value: T;
 }
 
@@ -13,7 +13,7 @@ export interface Ok<T> {
  * Represents a failed result containing an error of type E
  */
 export interface Err<E> {
-  readonly success: false;
+  readonly ok: false;
   readonly error: E;
 }
 
@@ -27,28 +27,28 @@ export type Result<T, E = Error> = Ok<T> | Err<E>;
  * Construct a successful result
  */
 export function ok<T>(value: T): Ok<T> {
-  return { success: true, value };
+  return { ok: true, value };
 }
 
 /**
  * Construct a failed result
  */
 export function err<E>(error: E): Err<E> {
-  return { success: false, error };
+  return { ok: false, error };
 }
 
 /**
  * Type guard: checks if a Result is successful
  */
 export function isOk<T, E>(result: Result<T, E>): result is Ok<T> {
-  return result.success === true;
+  return result.ok === true;
 }
 
 /**
  * Type guard: checks if a Result is a failure
  */
 export function isErr<T, E>(result: Result<T, E>): result is Err<E> {
-  return result.success === false;
+  return result.ok === false;
 }
 
 /**

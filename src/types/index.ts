@@ -1,5 +1,26 @@
 // src/types/index.ts
 
+// Branded IDs and semantic ID helpers (goodneighbor-specific)
+export type {
+  UserId,
+  PostId,
+  FeedId,
+  CommentId,
+  FeedSubmissionId,
+  SearchEntityId,
+} from './common.types';
+
+export {
+  createUserId,
+  createPostId,
+  createFeedId,
+  createCommentId,
+  createFeedSubmissionId,
+  createSearchEntityId,
+  formatUserRef,
+  SYSTEM_TOKENS,
+} from './common.types';
+
 // Result type
 export type { Result, Ok, Err } from './result.types';
 export {
@@ -28,24 +49,6 @@ export type {
   Values,
   Constructor,
   Immutable,
+  KeysOfType,
+  Timestamps,
 } from './utils.types';
-
-// Shared domain types
-export type {
-  UserId,
-  EmailAddress,
-  Timestamp,
-  User,
-  CreateUserInput,
-  ListUsersInput,
-  UserDTO,
-  PaginatedResult,
-} from './shared.types';
-
-export {
-  toUserId,
-  toEmailAddress,
-  toTimestamp,
-  toUserDTO,
-  createPaginatedResult,
-} from './shared.types';
