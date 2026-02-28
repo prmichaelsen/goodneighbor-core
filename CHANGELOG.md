@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Search architecture design (`local.search-architecture.md`) — Algolia config, filters builder, indexing flow
 - Config & infrastructure design (`local.config-infrastructure.md`) — Zod schemas, env vars, Firebase/Algolia init
 
+- 7 milestone documents (M1-M7) covering full project roadmap
+- 29 task documents organized by milestone folder
+- Full progress.yaml with milestones, tasks, dependencies, and estimates
+
 ### Changed
 
 - Adopt UID-based semantic IDs (`@uid:{firebaseUid}`) instead of username-based (`@/{username}`) to avoid fan-out on username changes
