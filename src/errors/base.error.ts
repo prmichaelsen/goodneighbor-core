@@ -1,5 +1,4 @@
 // src/errors/base.error.ts
-// Pattern: Error Types (core-sdk.types-error.md)
 
 export type ErrorKind =
   | 'validation'
@@ -17,10 +16,22 @@ export interface ErrorContext {
 
 /**
  * Base class for all application errors.
- * Always use a specific subclass — never throw AppError directly.
+ * Always use a specific subclass -- never throw AppError directly.
+ *
+ * Provides structured error information including:
+ * - kind: lowercase discriminant for pattern matching
+ * - code: uppercase machine-readable code for API responses
+ * - httpStatus: HTTP status code for REST adapter mapping
+ * - context: additional debugging context
  */
 export abstract class AppError extends Error {
   abstract readonly kind: ErrorKind;
+
+  /** Machine-readable error code (e.g., "NOT_FOUND", "VALIDATION_ERROR") */
+  abstract readonly code: string;
+
+  /** HTTP status code for REST adapter mapping */
+  abstract readonly httpStatus: number;
 
   constructor(
     message: string,
@@ -34,10 +45,12 @@ export abstract class AppError extends Error {
 
   toJSON(): object {
     return {
+      error: this.name,
       kind: this.kind,
-      name: this.name,
+      code: this.code,
       message: this.message,
-      context: this.context,
+      httpStatus: this.httpStatus,
+      ...(Object.keys(this.context).length > 0 ? { context: this.context } : {}),
     };
   }
 }

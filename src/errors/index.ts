@@ -1,5 +1,4 @@
 // src/errors/index.ts
-// Pattern: Error Types (core-sdk.types-error.md)
 
 export { AppError } from './base.error';
 export type { ErrorKind, ErrorContext } from './base.error';
@@ -9,10 +8,11 @@ export {
   UnauthorizedError,
   ForbiddenError,
   ConflictError,
+  ExternalServiceError,
   RateLimitError,
-  ExternalError,
   InternalError,
 } from './app-errors';
+export { ErrorCode, HTTP_STATUS_MAP, getHttpStatus } from './error-codes';
 
 import {
   ValidationError,
@@ -20,8 +20,8 @@ import {
   UnauthorizedError,
   ForbiddenError,
   ConflictError,
+  ExternalServiceError,
   RateLimitError,
-  ExternalError,
   InternalError,
 } from './app-errors';
 
@@ -35,28 +35,13 @@ export type AppErrorUnion =
   | UnauthorizedError
   | ForbiddenError
   | ConflictError
+  | ExternalServiceError
   | RateLimitError
-  | ExternalError
   | InternalError;
-
-/**
- * HTTP status codes for each error kind.
- * Use in REST adapters to map errors to responses.
- */
-export const HTTP_STATUS: Record<AppErrorUnion['kind'], number> = {
-  validation:   400,
-  unauthorized: 401,
-  forbidden:    403,
-  not_found:    404,
-  conflict:     409,
-  rate_limit:   429,
-  external:     502,
-  internal:     500,
-};
 
 /**
  * Type guard: checks if a value is a typed AppError
  */
 export function isAppError(value: unknown): value is AppErrorUnion {
-  return value instanceof Error && 'kind' in value;
+  return value instanceof Error && 'kind' in value && 'code' in value;
 }
