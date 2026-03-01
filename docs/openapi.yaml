@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Good Neighbor API
-  version: 0.3.0
+  version: 0.4.0
   description: |
     REST API for the Good Neighbor community platform.
     This spec is the single source of truth for the API contract.
@@ -27,6 +27,8 @@ tags:
     description: Entity search
   - name: Auth
     description: Authentication and session management
+  - name: App
+    description: Compound operations for app use-cases (server-side composition)
   - name: Health
     description: Health and version checks
 
@@ -459,6 +461,163 @@ paths:
                 $ref: '#/components/schemas/VerifySessionResult'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ── App Compound Operations ────────────────────────────────────────
+  /api/app/v1/create-and-submit:
+    post:
+      tags: [App]
+      summary: Create a post and submit it to a feed
+      operationId: appCreateAndSubmitToFeed
+      description: |
+        Compound operation: creates a post then submits it to the specified feed
+        in a single request. If the post is created but the feed submission fails,
+        the post will still exist.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAndSubmitRequest'
+      responses:
+        '201':
+          description: Post created and submitted to feed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAndSubmitResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/app/v1/create-feed-and-follow:
+    post:
+      tags: [App]
+      summary: Create a feed and auto-follow it
+      operationId: appCreateFeedAndFollow
+      description: |
+        Compound operation: creates a feed then automatically follows it
+        for the authenticated user.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedDto'
+      responses:
+        '201':
+          description: Feed created and followed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateFeedAndFollowResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/app/v1/setup-profile:
+    post:
+      tags: [App]
+      summary: Set up a user profile with a default board
+      operationId: appSetupProfile
+      description: |
+        Compound operation: updates the user's public profile and creates
+        a default board feed. If the board already exists (conflict), the
+        profile update is still returned successfully.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileFormData'
+      responses:
+        '200':
+          description: Profile updated with default board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicProfile'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/app/v1/profiles/{uid}:
+    get:
+      tags: [App]
+      summary: View a profile with its board
+      operationId: appViewProfile
+      description: |
+        Compound operation: fetches a user's public profile and their board
+        feed in parallel. The board may be null if the user has not created one.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Firebase UID of the profile to view
+      responses:
+        '200':
+          description: Profile with board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewProfileResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/app/v1/discover-users:
+    post:
+      tags: [App]
+      summary: Discover user profiles by search query
+      operationId: appDiscoverUsers
+      description: |
+        Compound operation: searches for user profiles matching the given
+        query string. Returns matching profiles wrapped in an envelope.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscoverUsersRequest'
+      responses:
+        '200':
+          description: Matching user profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoverUsersResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
         '500':
           $ref: '#/components/responses/InternalError'
 
@@ -1450,6 +1609,61 @@ components:
         environment:
           type: string
           example: production
+
+    # ── App Compound Schemas ──────────────────────────────────────
+    CreateAndSubmitRequest:
+      type: object
+      required: [post, feedId]
+      properties:
+        post:
+          $ref: '#/components/schemas/CreatePostDto'
+        feedId:
+          type: string
+
+    CreateAndSubmitResponse:
+      type: object
+      required: [post]
+      properties:
+        post:
+          $ref: '#/components/schemas/DbPost'
+
+    CreateFeedAndFollowResponse:
+      type: object
+      required: [feed]
+      properties:
+        feed:
+          $ref: '#/components/schemas/DbFeed'
+
+    ViewProfileResponse:
+      type: object
+      required: [profile]
+      properties:
+        profile:
+          $ref: '#/components/schemas/PublicProfile'
+        board:
+          description: User's default board feed, or null if not created
+          allOf:
+            - $ref: '#/components/schemas/DbFeed'
+
+    DiscoverUsersRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+
+    DiscoverUsersResponse:
+      type: object
+      required: [profiles]
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicProfile'
 
     # ── Error Schema ─────────────────────────────────────────────
     SdkError:

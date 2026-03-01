@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `DiscoveryOperations`: `discoverUsers`
 - `createAppClient(config)` factory (server-side only)
 - 5 compound adapter handlers at `/api/app/v1/` for server-side composition
+- OpenAPI spec: 5 compound `/api/app/v1/` routes with request/response schemas
 - Subpath exports: `./web` and `./app`
 
 ### Changed
