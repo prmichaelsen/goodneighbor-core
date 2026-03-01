@@ -83,7 +83,7 @@ milestones:
     title: AppClient & Web Adapter
     status: in_progress
     tasks_total: 4
-    tasks_completed: 2
+    tasks_completed: 3
     estimated_days: 4
     dependencies: [M1, M5, M7, M8]
 
@@ -349,7 +349,7 @@ tasks:
       dependencies: [39]
     - id: 41
       title: AppClient factory & resources
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-10-appclient-web-adapter/task-41-app-client.md
       estimated_hours: 4
       dependencies: [30, 33]

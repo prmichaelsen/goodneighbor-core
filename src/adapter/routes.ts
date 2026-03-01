@@ -12,6 +12,13 @@ import { createComment, listComments, deleteComment } from './handlers/comments'
 import { searchEntities } from './handlers/search';
 import { verifySession } from './handlers/auth';
 import { healthCheck, versionCheck } from './handlers/health';
+import {
+  appCreateAndSubmitToFeed,
+  appCreateFeedAndFollow,
+  appSetupProfile,
+  appViewProfile,
+  appDiscoverUsers,
+} from './handlers/app';
 
 export interface CreateRoutesOptions {
   version?: string;
@@ -64,5 +71,12 @@ export function createRoutes(container: ServiceContainer, options?: CreateRoutes
     // Health (public — no auth required)
     { method: 'GET', path: '/health', handler: healthCheck() },
     { method: 'GET', path: '/version', handler: versionCheck(version, environment) },
+
+    // App compound operations (/api/app/v1/)
+    { method: 'POST', path: '/api/app/v1/create-and-submit', handler: appCreateAndSubmitToFeed(content, feed) },
+    { method: 'POST', path: '/api/app/v1/create-feed-and-follow', handler: appCreateFeedAndFollow(content, feed) },
+    { method: 'POST', path: '/api/app/v1/setup-profile', handler: appSetupProfile(profile) },
+    { method: 'GET', path: '/api/app/v1/profiles/:uid', handler: appViewProfile(profile) },
+    { method: 'POST', path: '/api/app/v1/discover-users', handler: appDiscoverUsers(profile) },
   ];
 }
