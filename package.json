@@ -48,8 +48,8 @@
   "author": "Patrick Michaelsen",
   "license": "MIT",
   "dependencies": {
+    "@prmichaelsen/firebase-admin-sdk-v8": "^2.5.1",
     "algoliasearch": "^5.49.1",
-    "firebase-admin": "^13.6.1",
     "zod": "^4.3.6"
   },
   "devDependencies": {

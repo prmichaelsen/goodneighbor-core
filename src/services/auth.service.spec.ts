@@ -1,30 +1,28 @@
 import { AuthService } from './auth.service';
 import type { CustomClaims } from '../types/auth.types';
 
-function createMockAuth(decoded: Record<string, unknown> = {}) {
-  return {
-    verifySessionCookie: jest.fn().mockResolvedValue({
-      uid: 'user-1',
-      email: 'test@example.com',
-      email_verified: true,
-      name: 'Test User',
-      picture: 'https://example.com/avatar.jpg',
-      auth_time: Math.floor(Date.now() / 1000) - 60, // 1 minute ago
-      isOwnerOf: ['goodneighbor'],
-      isOverseerOf: [],
-      ...decoded,
-    }),
-  };
+function createMockVerify(decoded: Record<string, unknown> = {}) {
+  return jest.fn().mockResolvedValue({
+    uid: 'user-1',
+    email: 'test@example.com',
+    email_verified: true,
+    name: 'Test User',
+    picture: 'https://example.com/avatar.jpg',
+    auth_time: Math.floor(Date.now() / 1000) - 60, // 1 minute ago
+    isOwnerOf: ['goodneighbor'],
+    isOverseerOf: [],
+    ...decoded,
+  });
 }
 
-function createService(authOverrides: Record<string, unknown> = {}) {
-  const mockAuth = createMockAuth(authOverrides);
+function createService(decodedOverrides: Record<string, unknown> = {}) {
+  const mockVerify = createMockVerify(decodedOverrides);
   const service = new AuthService({
-    auth: mockAuth,
     authConfig: { sessionDurationDays: 14 },
     appConfig: { env: 'development', appName: 'goodneighbor', appUrl: 'https://goodneighbor.com' },
+    verifySessionCookie: mockVerify,
   });
-  return { service, mockAuth };
+  return { service, mockVerify };
 }
 
 describe('AuthService', () => {
@@ -43,9 +41,9 @@ describe('AuthService', () => {
     });
 
     it('should call verifySessionCookie with revocation checking', async () => {
-      const { service, mockAuth } = createService();
+      const { service, mockVerify } = createService();
       await service.verifySession('test-cookie');
-      expect(mockAuth.verifySessionCookie).toHaveBeenCalledWith('test-cookie', true);
+      expect(mockVerify).toHaveBeenCalledWith('test-cookie', true);
     });
 
     it('should return UnauthorizedError for expired session', async () => {
@@ -59,13 +57,11 @@ describe('AuthService', () => {
     });
 
     it('should return UnauthorizedError for invalid cookie', async () => {
-      const mockAuth = {
-        verifySessionCookie: jest.fn().mockRejectedValue(new Error('auth/session-cookie-revoked')),
-      };
+      const mockVerify = jest.fn().mockRejectedValue(new Error('auth/session-cookie-revoked'));
       const service = new AuthService({
-        auth: mockAuth,
         authConfig: { sessionDurationDays: 14 },
         appConfig: { env: 'development', appName: 'goodneighbor', appUrl: 'https://goodneighbor.com' },
+        verifySessionCookie: mockVerify,
       });
       const result = await service.verifySession('invalid-cookie');
       expect(result.ok).toBe(false);
@@ -162,13 +158,11 @@ describe('AuthService', () => {
     });
 
     it('should return UnauthorizedError for invalid session', async () => {
-      const mockAuth = {
-        verifySessionCookie: jest.fn().mockRejectedValue(new Error('invalid')),
-      };
+      const mockVerify = jest.fn().mockRejectedValue(new Error('invalid'));
       const service = new AuthService({
-        auth: mockAuth,
         authConfig: { sessionDurationDays: 14 },
         appConfig: { env: 'development', appName: 'goodneighbor', appUrl: 'https://goodneighbor.com' },
+        verifySessionCookie: mockVerify,
       });
       const result = await service.requireOwner('bad-cookie');
       expect(result.ok).toBe(false);

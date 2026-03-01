@@ -1,70 +1,31 @@
 import {
   initializeFirebase,
-  getAuth,
-  getFirestore,
-  getStorage,
   resetFirebaseForTesting,
 } from './firebase';
 import type { FirebaseConfig } from './schema';
 
-// Mock firebase-admin
-jest.mock('firebase-admin', () => {
-  const mockAuth = { verifySessionCookie: jest.fn() };
-  const mockFirestore = { collection: jest.fn() };
-  const mockStorage = { bucket: jest.fn() };
+jest.mock('@prmichaelsen/firebase-admin-sdk-v8', () => ({
+  initializeApp: jest.fn(),
+  clearConfig: jest.fn(),
+}));
 
-  const mockApp = {
-    auth: jest.fn(() => mockAuth),
-    firestore: jest.fn(() => mockFirestore),
-    storage: jest.fn(() => mockStorage),
-  };
-
-  return {
-    apps: [] as any[],
-    app: jest.fn(() => mockApp),
-    initializeApp: jest.fn(() => {
-      const mod = require('firebase-admin');
-      mod.apps.push(mockApp);
-      return mockApp;
-    }),
-    credential: {
-      cert: jest.fn((serviceAccount: any) => serviceAccount),
-    },
-  };
-});
-
-describe('Firebase Admin Initialization', () => {
+describe('Firebase Initialization (v8 edge SDK)', () => {
   const testConfig: FirebaseConfig = {
-    serviceAccountKey: '{"type":"service_account","project_id":"test"}',
+    serviceAccountKey: '{"type":"service_account","project_id":"test-project","private_key":"key","client_email":"test@test.iam.gserviceaccount.com","token_uri":"https://oauth2.googleapis.com/token"}',
   };
 
   beforeEach(() => {
-    resetFirebaseForTesting();
-    const admin = require('firebase-admin');
-    admin.apps.length = 0;
     jest.clearAllMocks();
   });
 
   describe('initializeFirebase', () => {
-    it('should initialize Firebase app on first call', () => {
-      const admin = require('firebase-admin');
-      const app = initializeFirebase(testConfig);
-      expect(admin.initializeApp).toHaveBeenCalledTimes(1);
-      expect(admin.credential.cert).toHaveBeenCalledWith({
-        type: 'service_account',
-        project_id: 'test',
-      });
-      expect(app).toBeDefined();
-    });
-
-    it('should return same app on subsequent calls (singleton)', () => {
-      const app1 = initializeFirebase(testConfig);
-      const admin = require('firebase-admin');
-      admin.initializeApp.mockClear();
-
-      const app2 = initializeFirebase(testConfig);
-      expect(admin.initializeApp).not.toHaveBeenCalled();
-      expect(app2).toBe(app1);
+    it('should call initializeApp with parsed service account', () => {
+      const sdk = require('@prmichaelsen/firebase-admin-sdk-v8');
+      initializeFirebase(testConfig);
+      expect(sdk.initializeApp).toHaveBeenCalledTimes(1);
+      const call = sdk.initializeApp.mock.calls[0][0];
+      expect(call.projectId).toBe('test-project');
+      expect(call.serviceAccount.type).toBe('service_account');
     });
 
     it('should throw on invalid JSON serviceAccountKey', () => {
@@ -74,27 +35,11 @@ describe('Firebase Admin Initialization', () => {
     });
   });
 
-  describe('getAuth', () => {
-    it('should return Firebase Auth instance', () => {
-      const auth = getAuth(testConfig);
-      expect(auth).toBeDefined();
-      expect(auth.verifySessionCookie).toBeDefined();
-    });
-  });
-
-  describe('getFirestore', () => {
-    it('should return Firestore instance', () => {
-      const firestore = getFirestore(testConfig);
-      expect(firestore).toBeDefined();
-      expect(firestore.collection).toBeDefined();
-    });
-  });
-
-  describe('getStorage', () => {
-    it('should return Storage instance', () => {
-      const storage = getStorage(testConfig);
-      expect(storage).toBeDefined();
-      expect(storage.bucket).toBeDefined();
+  describe('resetFirebaseForTesting', () => {
+    it('should call clearConfig', () => {
+      const sdk = require('@prmichaelsen/firebase-admin-sdk-v8');
+      resetFirebaseForTesting();
+      expect(sdk.clearConfig).toHaveBeenCalledTimes(1);
     });
   });
 });
