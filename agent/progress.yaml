@@ -1,8 +1,8 @@
 project:
   name: goodneighbor-core
-  version: 0.1.0
+  version: 0.1.1
   started: 2026-02-28
-  status: completed
+  status: in_progress
   description: |
     Core library for Good Neighbor platform
 
@@ -62,6 +62,14 @@ milestones:
     tasks_completed: 4
     estimated_days: 4
     dependencies: [M1, M2, M3, M4, M5, M6]
+
+  - id: M8
+    title: REST Client SDK
+    status: not_started
+    tasks_total: 5
+    tasks_completed: 0
+    estimated_days: 5
+    dependencies: [M1, M5, M7]
 
 tasks:
   milestone_1:
@@ -252,16 +260,48 @@ tasks:
       estimated_hours: 2
       dependencies: [27, 28]
 
+  milestone_8:
+    - id: 30
+      title: SdkResponse, HttpClient & Browser Guard
+      status: not_started
+      file: agent/tasks/milestone-8-rest-client-sdk/task-30-sdk-response-http-guard.md
+      estimated_hours: 3
+      dependencies: [5]
+    - id: 31
+      title: Resource implementations (6 resources)
+      status: not_started
+      file: agent/tasks/milestone-8-rest-client-sdk/task-31-resource-implementations.md
+      estimated_hours: 5
+      dependencies: [30, 3]
+    - id: 32
+      title: Client factory & barrel exports
+      status: not_started
+      file: agent/tasks/milestone-8-rest-client-sdk/task-32-client-factory.md
+      estimated_hours: 2
+      dependencies: [30, 31]
+    - id: 33
+      title: REST adapter (route handlers)
+      status: not_started
+      file: agent/tasks/milestone-8-rest-client-sdk/task-33-rest-adapter.md
+      estimated_hours: 5
+      dependencies: [26, 3]
+    - id: 34
+      title: Integration, build & export verification
+      status: not_started
+      file: agent/tasks/milestone-8-rest-client-sdk/task-34-integration-build.md
+      estimated_hours: 3
+      dependencies: [30, 31, 32, 33]
+
 documentation:
   design_documents: 5
-  milestone_documents: 7
-  pattern_documents: 30
-  task_documents: 29
+  milestone_documents: 8
+  pattern_documents: 32
+  task_documents: 34
 
 progress:
   planning: 100
-  implementation: 100
-  overall: 100
+  implementation: 85
+  overall: 88
 
 recent_work:
   - date: 2026-03-01
@@ -285,10 +325,12 @@ recent_work:
       - "457 unit tests passing across 27 test suites"
 
 next_steps:
-  - "Run npm run build to verify package builds correctly"
-  - "Run npm pack --dry-run to verify tarball contents"
-  - "Set up Firebase emulator for integration tests"
-  - "npm publish when ready"
+  - "Implement M8: REST Client SDK (5 tasks, ~18 hours)"
+  - "T30: SdkResponse, HttpClient & Browser Guard"
+  - "T31: 6 resource implementations (posts, profiles, feeds, comments, search, auth)"
+  - "T32: Client factory & barrel exports"
+  - "T33: REST adapter route handlers"
+  - "T34: Integration, build & export verification"
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest"
