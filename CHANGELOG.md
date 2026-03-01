@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- Scaffold template files that were not part of goodneighbor-core (`user.client.ts`, `base.service.ts`, `user.service.ts`, `shared.types.ts`, `client/index.ts`)
+- Stale `BaseService` and `UserService` re-exports from `services/index.ts`
+
 ### Added
 
 - Architecture design document (`local.goodneighbor-core.md`) — 8 services, source structure, migration path
