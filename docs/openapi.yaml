@@ -1,0 +1,1478 @@
+openapi: 3.0.3
+info:
+  title: Good Neighbor API
+  version: 0.2.0
+  description: |
+    REST API for the Good Neighbor community platform.
+    This spec is the single source of truth for the API contract.
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://api.goodneighbor.app
+    description: Production
+
+tags:
+  - name: Posts
+    description: Content post operations
+  - name: Feeds
+    description: Feed management and submissions
+  - name: Profiles
+    description: User profile operations
+  - name: Comments
+    description: Post comment operations
+  - name: Search
+    description: Entity search
+  - name: Auth
+    description: Authentication and session management
+  - name: Health
+    description: Health and version checks
+
+paths:
+  # ── Posts ──────────────────────────────────────────────────────────
+  /api/v1/posts:
+    post:
+      tags: [Posts]
+      summary: Create a post
+      operationId: createPost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostDto'
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbPost'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/posts/{id}:
+    get:
+      tags: [Posts]
+      summary: Get a post by ID
+      operationId: getPost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '200':
+          description: Post details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostViewModel'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags: [Posts]
+      summary: Delete a post
+      operationId: deletePost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '204':
+          description: Post deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  # ── Feeds ──────────────────────────────────────────────────────────
+  /api/v1/feeds:
+    post:
+      tags: [Feeds]
+      summary: Create a feed
+      operationId: createFeed
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedDto'
+      responses:
+        '201':
+          description: Feed created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbFeed'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/feeds/{id}:
+    get:
+      tags: [Feeds]
+      summary: Get a feed by ID
+      operationId: getFeed
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '200':
+          description: Feed details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedViewModel'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/feeds/{id}/follow:
+    post:
+      tags: [Feeds]
+      summary: Follow a feed
+      operationId: followFeed
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '204':
+          description: Feed followed
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/feeds/{id}/unfollow:
+    post:
+      tags: [Feeds]
+      summary: Unfollow a feed
+      operationId: unfollowFeed
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '204':
+          description: Feed unfollowed
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/feeds/{id}/submit:
+    post:
+      tags: [Feeds]
+      summary: Submit a post to a feed
+      operationId: submitToFeed
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [postId]
+              properties:
+                postId:
+                  type: string
+      responses:
+        '204':
+          description: Post submitted to feed
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ── Profiles ───────────────────────────────────────────────────────
+  /api/v1/profiles/{uid}:
+    get:
+      tags: [Profiles]
+      summary: Get a public profile
+      operationId: getProfile
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Firebase UID of the profile owner
+      responses:
+        '200':
+          description: Public profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicProfile'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags: [Profiles]
+      summary: Update a public profile
+      operationId: updateProfile
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Firebase UID of the profile owner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileFormData'
+      responses:
+        '200':
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicProfile'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/profiles/search:
+    post:
+      tags: [Profiles]
+      summary: Search user profiles
+      operationId: searchProfiles
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query:
+                  type: string
+                limit:
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+      responses:
+        '200':
+          description: Matching profiles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicProfile'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ── Comments ───────────────────────────────────────────────────────
+  /api/v1/comments:
+    post:
+      tags: [Comments]
+      summary: Create a comment on a post
+      operationId: createComment
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [postId, content]
+              properties:
+                postId:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '201':
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/posts/{id}/comments:
+    get:
+      tags: [Comments]
+      summary: List comments for a post
+      operationId: listComments
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+        - name: cursor
+          in: query
+          schema:
+            type: string
+          description: Pagination cursor
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          description: Number of comments to return
+      responses:
+        '200':
+          description: Paginated comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommentResult'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/comments/{id}:
+    delete:
+      tags: [Comments]
+      summary: Delete a comment
+      operationId: deleteComment
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '204':
+          description: Comment deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  # ── Search ─────────────────────────────────────────────────────────
+  /api/v1/search:
+    post:
+      tags: [Search]
+      summary: Search entities
+      operationId: searchEntities
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlgoliaSearchParams'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResultItem'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ── Auth ───────────────────────────────────────────────────────────
+  /api/v1/auth/verify:
+    post:
+      tags: [Auth]
+      summary: Verify a session cookie
+      operationId: verifySession
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sessionCookie]
+              properties:
+                sessionCookie:
+                  type: string
+      responses:
+        '200':
+          description: Session is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifySessionResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ── Health ─────────────────────────────────────────────────────────
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      operationId: healthCheck
+      security: []
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /version:
+    get:
+      tags: [Health]
+      summary: Version information
+      operationId: versionCheck
+      security: []
+      responses:
+        '200':
+          description: Version information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionResponse'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+# ═══════════════════════════════════════════════════════════════════════
+# Components
+# ═══════════════════════════════════════════════════════════════════════
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    UserId:
+      name: x-user-id
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Authenticated user's Firebase UID
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Resource identifier
+
+  # ── Response Templates ───────────────────────────────────────────
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    Conflict:
+      description: Resource conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    BadGateway:
+      description: External service error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+    NotImplemented:
+      description: Endpoint not yet implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SdkError'
+
+  # ── Schemas ──────────────────────────────────────────────────────
+  schemas:
+    # ── Shared ───────────────────────────────────────────────────
+    Timestamps:
+      type: object
+      required: [createdAt, updatedAt]
+      properties:
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    EntityStats:
+      type: object
+      required:
+        - viewers
+        - followers
+        - sharers
+        - likers
+        - comments
+        - views
+        - reposts
+        - quotes
+        - annotations
+        - tags
+      properties:
+        viewers:
+          type: integer
+        followers:
+          type: integer
+        sharers:
+          type: integer
+        likers:
+          type: integer
+        comments:
+          type: integer
+        views:
+          type: integer
+        reposts:
+          type: integer
+        quotes:
+          type: integer
+        annotations:
+          type: integer
+        tags:
+          type: integer
+
+    ContentEntityProperties:
+      type: object
+      required: [displayName, mainContent, tags, mentions]
+      properties:
+        displayName:
+          type: string
+        mainContent:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        mentions:
+          type: array
+          items:
+            type: string
+
+    FeedProperties:
+      allOf:
+        - $ref: '#/components/schemas/ContentEntityProperties'
+        - type: object
+          required: [rules]
+          properties:
+            rules:
+              type: array
+              items:
+                type: string
+
+    SearchEntityRefs:
+      type: object
+      required:
+        - hasOwner
+        - hasViewer
+        - hasEditPermissions
+        - hasArchivePermissions
+        - hasUpdateViewersPermissions
+        - hasConfigurePropertiesPermissions
+      properties:
+        hasOwner:
+          type: array
+          items:
+            type: string
+        hasViewer:
+          type: array
+          items:
+            type: string
+        hasEditPermissions:
+          type: array
+          items:
+            type: string
+        hasArchivePermissions:
+          type: array
+          items:
+            type: string
+        hasUpdateViewersPermissions:
+          type: array
+          items:
+            type: string
+        hasConfigurePropertiesPermissions:
+          type: array
+          items:
+            type: string
+
+    ContentEntityRefs:
+      allOf:
+        - $ref: '#/components/schemas/SearchEntityRefs'
+        - type: object
+          required:
+            - hasFollower
+            - hasSharer
+            - hasTag
+            - hasMention
+            - hasLiker
+            - hasSecretLiker
+            - hasAnonymousLiker
+            - hasReviewer
+            - hasCreator
+            - hasBeenViewedBy
+            - hasFlair
+            - hasSupporter
+            - hasComments
+            - hasCommenter
+            - hasQuote
+            - hasQuoter
+            - hasAnnotation
+            - hasAnnotator
+            - hasRepost
+            - hasReposter
+            - hasAuthor
+            - hasCollaborator
+            - hasRelated
+          properties:
+            hasFollower:
+              type: array
+              items:
+                type: string
+            hasSharer:
+              type: array
+              items:
+                type: string
+            hasTag:
+              type: array
+              items:
+                type: string
+            hasMention:
+              type: array
+              items:
+                type: string
+            hasLiker:
+              type: array
+              items:
+                type: string
+            hasSecretLiker:
+              type: array
+              items:
+                type: string
+            hasAnonymousLiker:
+              type: array
+              items:
+                type: string
+            hasReviewer:
+              type: array
+              items:
+                type: string
+            hasCreator:
+              type: array
+              items:
+                type: string
+            hasBeenViewedBy:
+              type: array
+              items:
+                type: string
+            hasFlair:
+              type: array
+              items:
+                type: string
+            hasSupporter:
+              type: array
+              items:
+                type: string
+            hasComments:
+              type: array
+              items:
+                type: string
+            hasCommenter:
+              type: array
+              items:
+                type: string
+            hasQuote:
+              type: array
+              items:
+                type: string
+            hasQuoter:
+              type: array
+              items:
+                type: string
+            hasAnnotation:
+              type: array
+              items:
+                type: string
+            hasAnnotator:
+              type: array
+              items:
+                type: string
+            hasRepost:
+              type: array
+              items:
+                type: string
+            hasReposter:
+              type: array
+              items:
+                type: string
+            hasAuthor:
+              type: array
+              items:
+                type: string
+            hasCollaborator:
+              type: array
+              items:
+                type: string
+            hasRelated:
+              type: array
+              items:
+                type: string
+
+    FeedEntityRefs:
+      allOf:
+        - $ref: '#/components/schemas/ContentEntityRefs'
+        - type: object
+          required:
+            - hasModerator
+            - hasMember
+            - hasApprover
+            - hasSubmitPermissions
+            - hasConfigureBehaviorPermissions
+            - hasSubmission
+            - hasRejected
+          properties:
+            hasModerator:
+              type: array
+              items:
+                type: string
+            hasMember:
+              type: array
+              items:
+                type: string
+            hasApprover:
+              type: array
+              items:
+                type: string
+            hasSubmitPermissions:
+              type: array
+              items:
+                type: string
+            hasConfigureBehaviorPermissions:
+              type: array
+              items:
+                type: string
+            hasSubmission:
+              type: array
+              items:
+                type: string
+            hasRejected:
+              type: array
+              items:
+                type: string
+
+    FeedBehavior:
+      type: object
+      required:
+        - submissionModels
+        - approvalModels
+        - ownershipModels
+        - automatedRules
+        - contentModel
+        - flair
+      properties:
+        submissionModels:
+          type: array
+          items:
+            type: string
+        approvalModels:
+          type: array
+          items:
+            type: string
+        aggregationRules:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        ownershipModels:
+          type: array
+          items:
+            type: string
+        automatedRules:
+          type: array
+          items:
+            type: string
+        contentModel:
+          type: array
+          items:
+            type: string
+        flair:
+          type: array
+          items:
+            type: string
+
+    # ── Post Schemas ─────────────────────────────────────────────
+    PostMedia:
+      type: object
+      required: [url, type]
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          enum: [image, video, audio, document]
+        caption:
+          type: string
+        altText:
+          type: string
+
+    CreatePostDto:
+      type: object
+      required: [title, content]
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        mentions:
+          type: array
+          items:
+            type: string
+        isPublic:
+          type: boolean
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostMedia'
+
+    DbPost:
+      type: object
+      required:
+        - id
+        - type
+        - name
+        - search
+        - refs
+        - isPublic
+        - isPublished
+        - timestamps
+        - metadata
+        - stats
+        - properties
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [post]
+        name:
+          type: string
+        search:
+          type: string
+        refs:
+          $ref: '#/components/schemas/ContentEntityRefs'
+        isPublic:
+          type: boolean
+        isPublished:
+          type: boolean
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+        metadata:
+          type: object
+          additionalProperties: true
+        stats:
+          $ref: '#/components/schemas/EntityStats'
+        properties:
+          $ref: '#/components/schemas/ContentEntityProperties'
+
+    PostViewModel:
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - authorId
+        - authorUsername
+        - authorDisplayName
+        - authorAvatarUrl
+        - tags
+        - mentions
+        - media
+        - isPublic
+        - isPublished
+        - stats
+        - timestamps
+        - canEdit
+        - canDelete
+        - isLiked
+        - isFollowing
+        - isOwner
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+        authorUsername:
+          type: string
+        authorDisplayName:
+          type: string
+        authorAvatarUrl:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        mentions:
+          type: array
+          items:
+            type: string
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostMedia'
+        isPublic:
+          type: boolean
+        isPublished:
+          type: boolean
+        stats:
+          $ref: '#/components/schemas/EntityStats'
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+        canEdit:
+          type: boolean
+        canDelete:
+          type: boolean
+        isLiked:
+          type: boolean
+        isFollowing:
+          type: boolean
+        isOwner:
+          type: boolean
+
+    # ── Feed Schemas ─────────────────────────────────────────────
+    CreateFeedDto:
+      type: object
+      required: [name, description, subtype]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        subtype:
+          type: string
+          enum: [user, feed, dynamic, list, board]
+        rules:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        isPublic:
+          type: boolean
+        parentFeed:
+          type: string
+        submissionModels:
+          type: array
+          items:
+            type: string
+        approvalModels:
+          type: array
+          items:
+            type: string
+        ownershipModels:
+          type: array
+          items:
+            type: string
+
+    DbFeed:
+      type: object
+      required:
+        - id
+        - type
+        - name
+        - search
+        - subtype
+        - childrenFeeds
+        - refs
+        - isPublic
+        - isPublished
+        - timestamps
+        - metadata
+        - stats
+        - properties
+        - behavior
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [feed]
+        name:
+          type: string
+        search:
+          type: string
+        subtype:
+          type: string
+          enum: [user, feed, dynamic, list, board]
+        parentFeed:
+          type: string
+        childrenFeeds:
+          type: array
+          items:
+            type: string
+        refs:
+          $ref: '#/components/schemas/FeedEntityRefs'
+        isPublic:
+          type: boolean
+        isPublished:
+          type: boolean
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+        metadata:
+          type: object
+          additionalProperties: true
+        stats:
+          $ref: '#/components/schemas/EntityStats'
+        properties:
+          $ref: '#/components/schemas/FeedProperties'
+        behavior:
+          $ref: '#/components/schemas/FeedBehavior'
+
+    FeedViewModel:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - subtype
+        - rules
+        - isPublic
+        - isPublished
+        - stats
+        - timestamps
+        - childrenFeeds
+        - behavior
+        - isOwner
+        - isModerator
+        - isMember
+        - isFollowing
+        - canPost
+        - canModerate
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        subtype:
+          type: string
+          enum: [user, feed, dynamic, list, board]
+        rules:
+          type: array
+          items:
+            type: string
+        isPublic:
+          type: boolean
+        isPublished:
+          type: boolean
+        stats:
+          $ref: '#/components/schemas/EntityStats'
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+        parentFeed:
+          type: string
+        childrenFeeds:
+          type: array
+          items:
+            type: string
+        behavior:
+          $ref: '#/components/schemas/FeedBehavior'
+        isOwner:
+          type: boolean
+        isModerator:
+          type: boolean
+        isMember:
+          type: boolean
+        isFollowing:
+          type: boolean
+        canPost:
+          type: boolean
+        canModerate:
+          type: boolean
+
+    # ── Profile Schemas ──────────────────────────────────────────
+    PublicProfile:
+      type: object
+      required:
+        - uid
+        - username
+        - displayName
+        - bio
+        - avatarUrl
+        - isVerified
+        - followerCount
+        - followingCount
+        - postCount
+        - timestamps
+      properties:
+        uid:
+          type: string
+        username:
+          type: string
+        displayName:
+          type: string
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        coverImageUrl:
+          type: string
+        location:
+          type: string
+        website:
+          type: string
+        isVerified:
+          type: boolean
+        followerCount:
+          type: integer
+        followingCount:
+          type: integer
+        postCount:
+          type: integer
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+
+    ProfileFormData:
+      type: object
+      properties:
+        displayName:
+          type: string
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        coverImageUrl:
+          type: string
+        location:
+          type: string
+        website:
+          type: string
+        username:
+          type: string
+
+    # ── Comment Schemas ──────────────────────────────────────────
+    Comment:
+      type: object
+      required:
+        - id
+        - postId
+        - authorId
+        - authorUsername
+        - authorDisplayName
+        - authorAvatarUrl
+        - content
+        - timestamps
+        - replyCount
+        - likeCount
+        - isLiked
+        - canEdit
+        - canDelete
+      properties:
+        id:
+          type: string
+        postId:
+          type: string
+        authorId:
+          type: string
+        authorUsername:
+          type: string
+        authorDisplayName:
+          type: string
+        authorAvatarUrl:
+          type: string
+        content:
+          type: string
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+        replyCount:
+          type: integer
+        likeCount:
+          type: integer
+        isLiked:
+          type: boolean
+        canEdit:
+          type: boolean
+        canDelete:
+          type: boolean
+
+    PaginatedCommentResult:
+      type: object
+      required: [items, total, page, limit, hasNextPage, hasPreviousPage]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        hasNextPage:
+          type: boolean
+        hasPreviousPage:
+          type: boolean
+        nextCursor:
+          type: string
+
+    # ── Search Schemas ───────────────────────────────────────────
+    AlgoliaSearchParams:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+        page:
+          type: integer
+        hitsPerPage:
+          type: integer
+        filters:
+          type: string
+        facetFilters:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        attributesToRetrieve:
+          type: array
+          items:
+            type: string
+        attributesToHighlight:
+          type: array
+          items:
+            type: string
+        highlightPreTag:
+          type: string
+        highlightPostTag:
+          type: string
+        aroundLatLng:
+          type: string
+        aroundRadius:
+          type: integer
+        typoTolerance:
+          oneOf:
+            - type: boolean
+            - type: string
+              enum: [min, strict]
+
+    SearchResultItem:
+      type: object
+      required: [objectID, type, name, search, isPublic, timestamps]
+      properties:
+        objectID:
+          type: string
+        type:
+          type: string
+          enum: [post, feed, comment, feed_submission]
+        name:
+          type: string
+        search:
+          type: string
+        isPublic:
+          type: boolean
+        timestamps:
+          $ref: '#/components/schemas/Timestamps'
+        _highlightResult:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/HighlightResult'
+
+    HighlightResult:
+      type: object
+      required: [value, matchLevel, matchedWords]
+      properties:
+        value:
+          type: string
+        matchLevel:
+          type: string
+          enum: [none, partial, full]
+        matchedWords:
+          type: array
+          items:
+            type: string
+
+    # ── Auth Schemas ─────────────────────────────────────────────
+    VerifySessionResult:
+      type: object
+      required: [uid, claims]
+      properties:
+        uid:
+          type: string
+        claims:
+          type: object
+          additionalProperties: true
+
+    CustomClaims:
+      type: object
+      properties:
+        isOwnerOf:
+          type: array
+          items:
+            type: string
+        isOverseerOf:
+          type: array
+          items:
+            type: string
+      additionalProperties: true
+
+    # ── Health Schemas ───────────────────────────────────────────
+    HealthCheckResponse:
+      type: object
+      required: [status, timestamp]
+      properties:
+        status:
+          type: string
+          example: ok
+        timestamp:
+          type: string
+          format: date-time
+
+    VersionResponse:
+      type: object
+      required: [version, environment]
+      properties:
+        version:
+          type: string
+          example: 0.2.0
+        environment:
+          type: string
+          example: production
+
+    # ── Error Schema ─────────────────────────────────────────────
+    SdkError:
+      type: object
+      required: [code, message, status]
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          enum:
+            - NOT_FOUND
+            - VALIDATION_ERROR
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - CONFLICT
+            - EXTERNAL_SERVICE_ERROR
+            - RATE_LIMIT
+            - INTERNAL_ERROR
+            - NOT_IMPLEMENTED
+        message:
+          type: string
+          description: Human-readable error message
+        status:
+          type: integer
+          description: HTTP status code
+        context:
+          type: object
+          additionalProperties: true
+          description: Additional error context

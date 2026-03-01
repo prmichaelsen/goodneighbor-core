@@ -73,9 +73,9 @@ milestones:
 
   - id: M9
     title: OpenAPI Spec, Type Generation & Health
-    status: not_started
+    status: in_progress
     tasks_total: 4
-    tasks_completed: 0
+    tasks_completed: 1
     estimated_days: 3
     dependencies: [M1, M8]
 
@@ -311,7 +311,7 @@ tasks:
   milestone_9:
     - id: 35
       title: OpenAPI 3.0 specification
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-9-openapi-type-generation/task-35-openapi-spec.md
       estimated_hours: 4
       dependencies: [1, 2, 3, 33]
