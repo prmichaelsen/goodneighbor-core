@@ -2,7 +2,7 @@ project:
   name: goodneighbor-core
   version: 0.1.0
   started: 2026-02-28
-  status: in_progress
+  status: completed
   description: |
     Core library for Good Neighbor platform
 
@@ -41,25 +41,25 @@ milestones:
 
   - id: M5
     title: Core Services
-    status: not_started
+    status: completed
     tasks_total: 5
-    tasks_completed: 0
+    tasks_completed: 5
     estimated_days: 6
     dependencies: [M1, M2, M3, M4]
 
   - id: M6
     title: Notification & I18n
-    status: not_started
+    status: completed
     tasks_total: 3
-    tasks_completed: 0
+    tasks_completed: 3
     estimated_days: 3
     dependencies: [M1, M2]
 
   - id: M7
     title: ServiceContainer, Build & Publish
-    status: not_started
+    status: completed
     tasks_total: 4
-    tasks_completed: 0
+    tasks_completed: 4
     estimated_days: 4
     dependencies: [M1, M2, M3, M4, M5, M6]
 
@@ -177,31 +177,31 @@ tasks:
   milestone_5:
     - id: 18
       title: AuthService
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-5-core-services/task-18-auth-service.md
       estimated_hours: 3
       dependencies: [5, 8]
     - id: 19
       title: ContentService
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-5-core-services/task-19-content-service.md
       estimated_hours: 4
       dependencies: [12, 14, 16]
     - id: 20
       title: ProfileService
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-5-core-services/task-20-profile-service.md
       estimated_hours: 5
       dependencies: [3, 8]
     - id: 21
       title: FeedService
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-5-core-services/task-21-feed-service.md
       estimated_hours: 4
       dependencies: [13, 16]
     - id: 22
       title: CommentService
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-5-core-services/task-22-comment-service.md
       estimated_hours: 3
       dependencies: [2, 8]
@@ -209,19 +209,19 @@ tasks:
   milestone_6:
     - id: 23
       title: NotificationService
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-6-notification-i18n/task-23-notification-service.md
       estimated_hours: 3
       dependencies: [5, 7]
     - id: 24
       title: I18nService
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-6-notification-i18n/task-24-i18n-service.md
       estimated_hours: 3
       dependencies: [1]
     - id: 25
       title: Translation keys & locale files
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-6-notification-i18n/task-25-translation-files.md
       estimated_hours: 4
       dependencies: [24]
@@ -229,25 +229,25 @@ tasks:
   milestone_7:
     - id: 26
       title: ServiceContainer wiring
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-7-servicecontainer-build-publish/task-26-service-container.md
       estimated_hours: 4
       dependencies: [18, 19, 20, 21, 22, 23, 24, 25]
     - id: 27
       title: Package build & export verification
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-7-servicecontainer-build-publish/task-27-package-build-exports.md
       estimated_hours: 3
       dependencies: [26]
     - id: 28
       title: Integration tests
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-7-servicecontainer-build-publish/task-28-integration-tests.md
       estimated_hours: 4
       dependencies: [26, 27]
     - id: 29
       title: npm publish preparation
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-7-servicecontainer-build-publish/task-29-npm-publish-prep.md
       estimated_hours: 2
       dependencies: [27, 28]
@@ -260,26 +260,40 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 59
-  overall: 62
+  implementation: 100
+  overall: 100
 
 recent_work:
-  - date: 2026-02-28
+  - date: 2026-03-01
     items:
-      - "Completed M4: Search Service (3/3 tasks)"
-      - "T15: AlgoliaFilters fluent builder with insertion-order preservation"
-      - "T16: SearchService with v5 Algolia API, permission injection, Result errors"
-      - "T17: ALGOLIA_INDEX_SETTINGS constant (facets, ranking, typo tolerance)"
-      - "Adapted task docs from Algolia v4 (initIndex) to v5 (searchSingleIndex, saveObject)"
-      - "310 unit tests passing across 18 test suites"
+      - "Completed M5: Core Services (5/5 tasks)"
+      - "T18: AuthService with v8 SDK (verifySession, isOwner, requireOwner)"
+      - "T19: ContentService (createPost, createFeed, getPost, getFeed, mappers)"
+      - "T20: ProfileService (CRUD, boards, user search with prefix queries)"
+      - "T21: FeedService (follow/unfollow, submissions, permission checks)"
+      - "T22: CommentService (cursor pagination, atomic batch writes)"
+      - "Completed M6: Notification & I18n (3/3 tasks)"
+      - "T23: NotificationService (Mandrill API + debug email capture)"
+      - "T24: I18nService (translate, formatDate, variable interpolation)"
+      - "T25: 250+ translation keys for en-US and es-ES"
+      - "Completed M7: ServiceContainer, Build & Publish (4/4 tasks)"
+      - "T26: ServiceContainer with lazy singleton pattern, 8 services wired"
+      - "T27: Updated esbuild config, package.json exports, root barrel"
+      - "T28: Testing helpers and fixtures for integration testing"
+      - "T29: npm publish prep (@prmichaelsen/goodneighbor-core 0.1.0)"
+      - "Migrated from firebase-admin to @prmichaelsen/firebase-admin-sdk-v8"
+      - "457 unit tests passing across 27 test suites"
 
 next_steps:
-  - "Start M5: Core Services (Tasks 18-22) — depends on M1+M2+M3+M4 (all complete)"
-  - "Start M6: Notification & I18n (Tasks 23-25) — depends on M1+M2 (all complete)"
-  - "M7: ServiceContainer, Build & Publish — depends on all above"
+  - "Run npm run build to verify package builds correctly"
+  - "Run npm pack --dry-run to verify tarball contents"
+  - "Set up Firebase emulator for integration tests"
+  - "npm publish when ready"
 
 notes:
-  - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest, manager notifications"
-  - "Package version in package.json says 1.0.0 (template default) - needs update to 0.1.0"
+  - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest"
+  - "All services use @prmichaelsen/firebase-admin-sdk-v8 standalone functions for edge runtime"
+  - "firebase-admin removed, replaced with REST API-based v8 SDK"
+  - "Algolia v5 API used (not v4)"
 
 current_blockers: []

@@ -1,0 +1,34 @@
+# Source
+src/
+tests/
+
+# Agent/ACP files
+agent/
+.claude/
+.acp/
+
+# Build config
+esbuild.build.js
+esbuild.watch.js
+tsconfig.json
+jest.config.js
+
+# Dev files
+.gitignore
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Test artifacts
+coverage/
+*.spec.ts
+*.spec.js
+*.e2e.ts
+*.e2e.js
+__tests__/
+
+# Misc
+*.log
+.env*
+.DS_Store
+progress.yaml

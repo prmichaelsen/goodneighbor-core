@@ -2,20 +2,31 @@ import esbuild from 'esbuild'
 import { execSync } from 'child_process'
 
 const entryPoints = [
-  'src/schemas/task.ts',
-  'src/dto/index.ts',
-  'src/services/task-database.service.ts',
-  'src/client.ts',
-  'src/constant/collections.ts'
+  'src/index.ts',
+  'src/services/index.ts',
+  'src/constants/collections.ts',
+  'src/errors/app-errors.ts',
+  'src/errors/base.error.ts',
+  'src/config/schema.ts',
+  'src/config/loader.ts',
+  'src/config/firebase.ts',
+  'src/config/algolia.ts',
+  'src/config/secrets.ts',
+  'src/i18n/index.ts',
+  'src/container.ts',
 ]
 
 const sharedConfig = {
   bundle: true,
   platform: 'node',
-  target: 'node20',
+  target: 'node18',
   format: 'esm',
   sourcemap: true,
-  external: ['firebase-admin', 'zod']
+  external: [
+    '@prmichaelsen/firebase-admin-sdk-v8',
+    'algoliasearch',
+    'zod',
+  ],
 }
 
 // Build all entry points
@@ -25,7 +36,7 @@ await Promise.all(
       ...sharedConfig,
       entryPoints: [entry],
       outdir: 'dist',
-      outExtension: { '.js': '.js' }
+      outExtension: { '.js': '.js' },
     })
   )
 )
@@ -33,7 +44,7 @@ await Promise.all(
 // Generate TypeScript declarations
 console.log('Generating TypeScript declarations...')
 execSync('tsc --emitDeclarationOnly --declaration --declarationMap', {
-  stdio: 'inherit'
+  stdio: 'inherit',
 })
 
 console.log('Build complete!')

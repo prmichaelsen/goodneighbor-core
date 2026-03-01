@@ -1,110 +1,66 @@
 // src/testing/fixtures.ts
-// Pattern: Test Fixtures (core-sdk.testing-fixtures.md)
-//
-// Pre-built User fixtures with stable IDs and deterministic field values.
-// Import these in tests instead of creating ad-hoc objects to ensure
-// assertions are reproducible and readable.
-//
-// All IDs, emails, and timestamps are static strings — never random.
-// This means fixture snapshots will always match.
+// Test data factories for goodneighbor-core testing.
 
-import type { User } from '../types/shared.types.js';
-import { toUserId, toEmailAddress, toTimestamp } from '../types/shared.types.js';
-
-// ─── Stable User Fixtures ──────────────────────────────────────────────────
+import type { CreatePostDto } from '../types/post.types';
+import type { CreateFeedDto } from '../types/feed.types';
+import type { PublicProfile } from '../types/profile.types';
+import type { CreateCommentDto } from '../types/comment.types';
 
 /**
- * Admin user fixture.
- * Use when you need an existing user with admin role.
+ * Create a test post DTO with defaults.
  */
-export const adminUser: User = {
-  id:        toUserId('usr_admin_001'),
-  email:     toEmailAddress('admin@example.com'),
-  name:      'Admin User',
-  role:      'admin',
-  createdAt: toTimestamp('2024-01-01T00:00:00.000Z'),
-  updatedAt: toTimestamp('2024-01-01T00:00:00.000Z'),
-};
+export function createTestPost(overrides: Partial<CreatePostDto> = {}): CreatePostDto {
+  return {
+    title: 'Test Post',
+    content: 'This is test content for integration testing.',
+    isPublic: true,
+    ...overrides,
+  };
+}
 
 /**
- * Member user fixture.
- * Use when you need an existing user with the default (member) role.
+ * Create a test public profile with defaults.
  */
-export const memberUser: User = {
-  id:        toUserId('usr_member_001'),
-  email:     toEmailAddress('member@example.com'),
-  name:      'Member User',
-  role:      'member',
-  createdAt: toTimestamp('2024-01-02T00:00:00.000Z'),
-  updatedAt: toTimestamp('2024-01-02T00:00:00.000Z'),
-};
+export function createTestPublicProfile(
+  uid: string,
+  overrides: Partial<PublicProfile> = {},
+): PublicProfile {
+  const now = new Date().toISOString();
+  return {
+    uid,
+    username: `testuser_${uid.slice(0, 8)}`,
+    displayName: 'Test User',
+    bio: 'A test user profile',
+    avatarUrl: '',
+    isVerified: false,
+    followerCount: 0,
+    followingCount: 0,
+    postCount: 0,
+    timestamps: { createdAt: now, updatedAt: now },
+    ...overrides,
+  };
+}
 
 /**
- * Viewer user fixture.
- * Use when you need an existing user with viewer role.
+ * Create a test feed DTO with defaults.
  */
-export const viewerUser: User = {
-  id:        toUserId('usr_viewer_001'),
-  email:     toEmailAddress('viewer@example.com'),
-  name:      'Viewer User',
-  role:      'viewer',
-  createdAt: toTimestamp('2024-01-03T00:00:00.000Z'),
-  updatedAt: toTimestamp('2024-01-03T00:00:00.000Z'),
-};
+export function createTestFeed(overrides: Partial<CreateFeedDto> = {}): CreateFeedDto {
+  return {
+    name: 'Test Feed',
+    description: 'A test feed for integration testing.',
+    subtype: 'feed',
+    isPublic: true,
+    ...overrides,
+  };
+}
 
 /**
- * All fixtures as an array.
- * Use with repo.seed() in a loop:
- *
- * @example
- * allUsers.forEach(u => repo.seed(u));
+ * Create a test comment DTO with defaults.
  */
-export const allUsers: User[] = [adminUser, memberUser, viewerUser];
-
-// ─── Input Fixtures ────────────────────────────────────────────────────────
-
-/**
- * Valid CreateUserInput for a new admin.
- * Use in create-path tests where the user does not already exist.
- */
-export const newAdminInput = {
-  email: 'new.admin@example.com',
-  name:  'New Admin',
-  role:  'admin' as const,
-};
-
-/**
- * Valid CreateUserInput for a new member.
- */
-export const newMemberInput = {
-  email: 'new.member@example.com',
-  name:  'New Member',
-  role:  'member' as const,
-};
-
-/**
- * Invalid CreateUserInput — email lacks '@'.
- * Use in validation error tests.
- */
-export const invalidEmailInput = {
-  email: 'notanemail',
-  name:  'Some Name',
-};
-
-/**
- * Invalid CreateUserInput — name is too short (< 2 chars after trimming).
- * Use in validation error tests.
- */
-export const invalidNameInput = {
-  email: 'valid@example.com',
-  name:  'X',
-};
-
-/**
- * CreateUserInput that will conflict with adminUser (same email).
- * Seed adminUser first, then attempt to create this to trigger ConflictError.
- */
-export const conflictingAdminInput = {
-  email: adminUser.email,
-  name:  'Duplicate Admin',
-};
+export function createTestComment(overrides: Partial<CreateCommentDto> = {}): CreateCommentDto {
+  return {
+    postId: 'test-post-id',
+    content: 'This is a test comment.',
+    ...overrides,
+  };
+}
