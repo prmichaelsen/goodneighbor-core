@@ -71,6 +71,22 @@ milestones:
     estimated_days: 5
     dependencies: [M1, M5, M7]
 
+  - id: M9
+    title: OpenAPI Spec, Type Generation & Health
+    status: not_started
+    tasks_total: 4
+    tasks_completed: 0
+    estimated_days: 3
+    dependencies: [M1, M8]
+
+  - id: M10
+    title: AppClient & Web Adapter
+    status: not_started
+    tasks_total: 4
+    tasks_completed: 0
+    estimated_days: 4
+    dependencies: [M1, M5, M7, M8]
+
 tasks:
   milestone_1:
     - id: 1
@@ -292,16 +308,68 @@ tasks:
       estimated_hours: 3
       dependencies: [30, 31, 32, 33]
 
+  milestone_9:
+    - id: 35
+      title: OpenAPI 3.0 specification
+      status: not_started
+      file: agent/tasks/milestone-9-openapi-type-generation/task-35-openapi-spec.md
+      estimated_hours: 4
+      dependencies: [1, 2, 3, 33]
+    - id: 36
+      title: Type generation pipeline
+      status: not_started
+      file: agent/tasks/milestone-9-openapi-type-generation/task-36-type-generation.md
+      estimated_hours: 3
+      dependencies: [35]
+    - id: 37
+      title: Refactor resources to generated types
+      status: not_started
+      file: agent/tasks/milestone-9-openapi-type-generation/task-37-refactor-to-generated-types.md
+      estimated_hours: 3
+      dependencies: [36]
+    - id: 38
+      title: Health resource & endpoint
+      status: not_started
+      file: agent/tasks/milestone-9-openapi-type-generation/task-38-health-endpoint.md
+      estimated_hours: 2
+      dependencies: [30, 33]
+
+  milestone_10:
+    - id: 39
+      title: WebSDKContext & WebSDKError
+      status: not_started
+      file: agent/tasks/milestone-10-appclient-web-adapter/task-39-web-sdk-context.md
+      estimated_hours: 3
+      dependencies: [26]
+    - id: 40
+      title: Compound use-case functions
+      status: not_started
+      file: agent/tasks/milestone-10-appclient-web-adapter/task-40-compound-use-cases.md
+      estimated_hours: 5
+      dependencies: [39]
+    - id: 41
+      title: AppClient factory & resources
+      status: not_started
+      file: agent/tasks/milestone-10-appclient-web-adapter/task-41-app-client.md
+      estimated_hours: 4
+      dependencies: [30, 33]
+    - id: 42
+      title: Integration, build & export verification
+      status: not_started
+      file: agent/tasks/milestone-10-appclient-web-adapter/task-42-integration-build-exports.md
+      estimated_hours: 3
+      dependencies: [39, 40, 41]
+
 documentation:
   design_documents: 5
-  milestone_documents: 8
+  milestone_documents: 10
   pattern_documents: 32
-  task_documents: 34
+  task_documents: 42
 
 progress:
   planning: 100
-  implementation: 100
-  overall: 100
+  implementation: 80
+  overall: 85
 
 recent_work:
   - date: 2026-03-01
@@ -313,9 +381,12 @@ recent_work:
       - "T33: Framework-agnostic REST adapter with 16 route handlers, AdapterRequest/AdapterResponse"
       - "T34: Build pipeline with outbase, package.json subpath exports, 544 tests passing across 44 suites"
       - "Version bumped to 0.2.0 (new feature: REST Client SDK)"
-      - "esbuild config fixed to use outbase for proper directory structure in dist/"
+      - "Planned M9: OpenAPI Spec, Type Generation & Health (4 tasks, T35-T38)"
+      - "Planned M10: AppClient & Web Adapter (4 tasks, T39-T42)"
 
-next_steps: []
+next_steps:
+  - "M9: Write OpenAPI 3.0 spec, set up type generation, refactor to generated types, add health endpoint"
+  - "M10: WebSDKContext, compound use-case functions, AppClient factory, integration & build"
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest"
