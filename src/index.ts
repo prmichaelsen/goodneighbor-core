@@ -139,3 +139,26 @@ export {
   processPostContent,
 } from './lib/content-processing';
 export type { PostCategory, ProcessedContent, ValidatedPost } from './lib/content-processing';
+
+// Client SDK types (runtime via ./clients/svc/v1 subpath export)
+export type {
+  SvcClient,
+  SdkResponse,
+  SdkError,
+  HttpClientConfig,
+  PostsResource,
+  ProfilesResource,
+  FeedsResource,
+  CommentsResource,
+  SearchResource,
+  AuthResource,
+  VerifySessionResult,
+} from './clients/svc/v1/index';
+
+// Adapter types (runtime via ./adapter subpath export)
+export type {
+  AdapterRequest,
+  AdapterResponse,
+  RouteHandler,
+  Route,
+} from './adapter/types';

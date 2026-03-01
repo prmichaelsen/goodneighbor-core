@@ -1,6 +1,6 @@
 {
   "name": "@prmichaelsen/goodneighbor-core",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Platform-agnostic business logic library for Good Neighbor community platform",
   "type": "module",
   "main": "dist/index.js",
@@ -38,6 +38,14 @@
     "./testing": {
       "types": "./dist/testing/index.d.ts",
       "import": "./dist/testing/index.js"
+    },
+    "./clients/svc/v1": {
+      "types": "./dist/clients/svc/v1/index.d.ts",
+      "import": "./dist/clients/svc/v1/index.js"
+    },
+    "./adapter": {
+      "types": "./dist/adapter/index.d.ts",
+      "import": "./dist/adapter/index.js"
     }
   },
   "files": [
@@ -75,6 +83,14 @@
     "@prmichaelsen/firebase-admin-sdk-v8": "^2.5.1",
     "algoliasearch": "^5.49.1",
     "zod": "^4.3.6"
+  },
+  "peerDependencies": {
+    "jsonwebtoken": ">=9.0.0"
+  },
+  "peerDependenciesMeta": {
+    "jsonwebtoken": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

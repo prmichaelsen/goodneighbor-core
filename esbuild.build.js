@@ -14,6 +14,8 @@ const entryPoints = [
   'src/config/secrets.ts',
   'src/i18n/index.ts',
   'src/container.ts',
+  'src/clients/svc/v1/index.ts',
+  'src/adapter/index.ts',
 ]
 
 const sharedConfig = {
@@ -26,20 +28,18 @@ const sharedConfig = {
     '@prmichaelsen/firebase-admin-sdk-v8',
     'algoliasearch',
     'zod',
+    'jsonwebtoken',
   ],
 }
 
-// Build all entry points
-await Promise.all(
-  entryPoints.map(entry =>
-    esbuild.build({
-      ...sharedConfig,
-      entryPoints: [entry],
-      outdir: 'dist',
-      outExtension: { '.js': '.js' },
-    })
-  )
-)
+// Build all entry points in one call to preserve directory structure
+await esbuild.build({
+  ...sharedConfig,
+  entryPoints,
+  outdir: 'dist',
+  outbase: 'src',
+  outExtension: { '.js': '.js' },
+})
 
 // Generate TypeScript declarations
 console.log('Generating TypeScript declarations...')

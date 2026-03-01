@@ -1,6 +1,6 @@
 project:
   name: goodneighbor-core
-  version: 0.1.1
+  version: 0.2.0
   started: 2026-02-28
   status: in_progress
   description: |
@@ -65,9 +65,9 @@ milestones:
 
   - id: M8
     title: REST Client SDK
-    status: not_started
+    status: completed
     tasks_total: 5
-    tasks_completed: 0
+    tasks_completed: 5
     estimated_days: 5
     dependencies: [M1, M5, M7]
 
@@ -263,31 +263,31 @@ tasks:
   milestone_8:
     - id: 30
       title: SdkResponse, HttpClient & Browser Guard
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-8-rest-client-sdk/task-30-sdk-response-http-guard.md
       estimated_hours: 3
       dependencies: [5]
     - id: 31
       title: Resource implementations (6 resources)
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-8-rest-client-sdk/task-31-resource-implementations.md
       estimated_hours: 5
       dependencies: [30, 3]
     - id: 32
       title: Client factory & barrel exports
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-8-rest-client-sdk/task-32-client-factory.md
       estimated_hours: 2
       dependencies: [30, 31]
     - id: 33
       title: REST adapter (route handlers)
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-8-rest-client-sdk/task-33-rest-adapter.md
       estimated_hours: 5
       dependencies: [26, 3]
     - id: 34
       title: Integration, build & export verification
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-8-rest-client-sdk/task-34-integration-build.md
       estimated_hours: 3
       dependencies: [30, 31, 32, 33]
@@ -300,37 +300,22 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 85
-  overall: 88
+  implementation: 100
+  overall: 100
 
 recent_work:
   - date: 2026-03-01
     items:
-      - "Completed M5: Core Services (5/5 tasks)"
-      - "T18: AuthService with v8 SDK (verifySession, isOwner, requireOwner)"
-      - "T19: ContentService (createPost, createFeed, getPost, getFeed, mappers)"
-      - "T20: ProfileService (CRUD, boards, user search with prefix queries)"
-      - "T21: FeedService (follow/unfollow, submissions, permission checks)"
-      - "T22: CommentService (cursor pagination, atomic batch writes)"
-      - "Completed M6: Notification & I18n (3/3 tasks)"
-      - "T23: NotificationService (Mandrill API + debug email capture)"
-      - "T24: I18nService (translate, formatDate, variable interpolation)"
-      - "T25: 250+ translation keys for en-US and es-ES"
-      - "Completed M7: ServiceContainer, Build & Publish (4/4 tasks)"
-      - "T26: ServiceContainer with lazy singleton pattern, 8 services wired"
-      - "T27: Updated esbuild config, package.json exports, root barrel"
-      - "T28: Testing helpers and fixtures for integration testing"
-      - "T29: npm publish prep (@prmichaelsen/goodneighbor-core 0.1.0)"
-      - "Migrated from firebase-admin to @prmichaelsen/firebase-admin-sdk-v8"
-      - "457 unit tests passing across 27 test suites"
+      - "Completed M8: REST Client SDK (5/5 tasks)"
+      - "T30: SdkResponse<T> with { data, error, throwOnError() }, HttpClient with dual auth, assertServerSide() guard"
+      - "T31: 6 resource implementations (posts, profiles, feeds, comments, search, auth)"
+      - "T32: createSvcClient factory, barrel exports, SvcClient interface"
+      - "T33: Framework-agnostic REST adapter with 16 route handlers, AdapterRequest/AdapterResponse"
+      - "T34: Build pipeline with outbase, package.json subpath exports, 544 tests passing across 44 suites"
+      - "Version bumped to 0.2.0 (new feature: REST Client SDK)"
+      - "esbuild config fixed to use outbase for proper directory structure in dist/"
 
-next_steps:
-  - "Implement M8: REST Client SDK (5 tasks, ~18 hours)"
-  - "T30: SdkResponse, HttpClient & Browser Guard"
-  - "T31: 6 resource implementations (posts, profiles, feeds, comments, search, auth)"
-  - "T32: Client factory & barrel exports"
-  - "T33: REST adapter route handlers"
-  - "T34: Integration, build & export verification"
+next_steps: []
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest"
