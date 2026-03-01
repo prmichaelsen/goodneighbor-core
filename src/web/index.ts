@@ -8,3 +8,13 @@ export type { WebSDKError } from './error';
 export { toWebSDKError } from './error';
 
 export { webTryCatch } from './helpers';
+
+// Use-case functions
+export {
+  createAndSubmitToFeed,
+  createFeedAndFollow,
+  setupProfile,
+  viewProfile,
+  discoverUsers,
+  getFeedDetails,
+} from './use-cases';

@@ -83,7 +83,7 @@ milestones:
     title: AppClient & Web Adapter
     status: in_progress
     tasks_total: 4
-    tasks_completed: 1
+    tasks_completed: 2
     estimated_days: 4
     dependencies: [M1, M5, M7, M8]
 
@@ -343,7 +343,7 @@ tasks:
       dependencies: [26]
     - id: 40
       title: Compound use-case functions
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-10-appclient-web-adapter/task-40-compound-use-cases.md
       estimated_hours: 5
       dependencies: [39]
