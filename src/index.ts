@@ -162,3 +162,9 @@ export type {
   RouteHandler,
   Route,
 } from './adapter/types';
+
+// Web SDK types (runtime via ./web subpath export)
+export type { WebSDKContext, WebSDKError } from './web';
+
+// AppClient types (runtime via ./app subpath export)
+export type { AppClient } from './app';

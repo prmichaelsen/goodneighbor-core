@@ -16,6 +16,8 @@ const entryPoints = [
   'src/container.ts',
   'src/clients/svc/v1/index.ts',
   'src/adapter/index.ts',
+  'src/web/index.ts',
+  'src/app/index.ts',
 ]
 
 const sharedConfig = {

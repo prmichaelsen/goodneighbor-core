@@ -1,6 +1,6 @@
 {
   "name": "@prmichaelsen/goodneighbor-core",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Platform-agnostic business logic library for Good Neighbor community platform",
   "type": "module",
   "main": "dist/index.js",
@@ -46,6 +46,14 @@
     "./adapter": {
       "types": "./dist/adapter/index.d.ts",
       "import": "./dist/adapter/index.js"
+    },
+    "./web": {
+      "types": "./dist/web/index.d.ts",
+      "import": "./dist/web/index.js"
+    },
+    "./app": {
+      "types": "./dist/app/index.d.ts",
+      "import": "./dist/app/index.js"
     }
   },
   "files": [

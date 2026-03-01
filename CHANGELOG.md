@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-03-01
+
+### Added
+- **Web SDK adapter** (`src/web/`) — `WebSDKContext` and `WebSDKError` types for web boundary
+- `toWebSDKError()` converter mapping `AppError` to serializable `WebSDKError`
+- `webTryCatch()` helper wrapping async functions in `Result<T, WebSDKError>`
+- 6 compound use-case functions: `setupProfile`, `viewProfile`, `discoverUsers`, `createAndSubmitToFeed`, `createFeedAndFollow`, `getFeedDetails`
+- **AppClient** (`src/app/`) — use-case-oriented REST client with compound operations
+- `ContentOperations`: `createAndSubmitToFeed`, `createFeedAndFollow` (fail-fast chaining)
+- `ProfileOperations`: `setupProfile`, `viewProfile`
+- `DiscoveryOperations`: `discoverUsers`
+- `createAppClient(config)` factory (server-side only)
+- 5 compound adapter handlers at `/api/app/v1/` for server-side composition
+- Subpath exports: `./web` and `./app`
+
+### Changed
+- Root barrel exports `WebSDKContext`, `WebSDKError`, and `AppClient` types
+- 608 tests passing across 58 suites (up from 565)
+
 ## [0.3.0] - 2026-03-01
 
 ### Added

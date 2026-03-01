@@ -1,6 +1,6 @@
 project:
   name: goodneighbor-core
-  version: 0.3.0
+  version: 0.4.0
   started: 2026-02-28
   status: in_progress
   description: |
@@ -81,9 +81,9 @@ milestones:
 
   - id: M10
     title: AppClient & Web Adapter
-    status: in_progress
+    status: completed
     tasks_total: 4
-    tasks_completed: 3
+    tasks_completed: 4
     estimated_days: 4
     dependencies: [M1, M5, M7, M8]
 
@@ -355,7 +355,7 @@ tasks:
       dependencies: [30, 33]
     - id: 42
       title: Integration, build & export verification
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-10-appclient-web-adapter/task-42-integration-build-exports.md
       estimated_hours: 3
       dependencies: [39, 40, 41]
@@ -368,25 +368,22 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 90
-  overall: 92
+  implementation: 100
+  overall: 100
 
 recent_work:
   - date: 2026-03-01
     items:
-      - "Completed M8: REST Client SDK (5/5 tasks)"
-      - "T30: SdkResponse<T> with { data, error, throwOnError() }, HttpClient with dual auth, assertServerSide() guard"
-      - "T31: 6 resource implementations (posts, profiles, feeds, comments, search, auth)"
-      - "T32: createSvcClient factory, barrel exports, SvcClient interface"
-      - "T33: Framework-agnostic REST adapter with 16 route handlers, AdapterRequest/AdapterResponse"
-      - "T34: Build pipeline with outbase, package.json subpath exports, 544 tests passing across 44 suites"
-      - "Version bumped to 0.2.0 (new feature: REST Client SDK)"
-      - "Planned M9: OpenAPI Spec, Type Generation & Health (4 tasks, T35-T38)"
-      - "Planned M10: AppClient & Web Adapter (4 tasks, T39-T42)"
+      - "Completed M9: OpenAPI Spec, Type Generation & Health (4/4 tasks)"
+      - "Completed M10: AppClient & Web Adapter (4/4 tasks)"
+      - "T39: WebSDKContext, WebSDKError, toWebSDKError(), webTryCatch()"
+      - "T40: 6 compound use-case functions (createAndSubmitToFeed, setupProfile, viewProfile, discoverUsers, createFeedAndFollow, getFeedDetails)"
+      - "T41: AppClient factory with ContentOperations, ProfileOperations, DiscoveryOperations + 5 compound adapter routes at /api/app/v1/"
+      - "T42: Subpath exports ./web and ./app, esbuild entry points, version bump to 0.4.0, CHANGELOG updated"
+      - "All 10 milestones complete: 42 tasks, 608 tests across 58 suites"
 
 next_steps:
-  - "M9: Write OpenAPI 3.0 spec, set up type generation, refactor to generated types, add health endpoint"
-  - "M10: WebSDKContext, compound use-case functions, AppClient factory, integration & build"
+  - "All planned milestones complete — project is feature-complete"
 
 notes:
   - "Cleanbook code excluded: no clean appointments, Guesty, Mellow, daily digest"
