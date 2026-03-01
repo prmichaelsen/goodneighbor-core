@@ -7,26 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-01
+
+### Added
+
+- **REST Client SDK** (`src/clients/`) — Supabase-style `SdkResponse<T>` with `{ data, error, throwOnError() }`
+- `HttpClient` with dual auth (getAuthToken callback or serviceToken JWT generation)
+- `assertServerSide()` browser guard to prevent accidental client-side bundling
+- 6 resource implementations: posts, profiles, feeds, comments, search, auth
+- `createSvcClient(config)` factory composing all resources from shared HttpClient
+- **REST Adapter** (`src/adapter/`) — Framework-agnostic route handler layer
+- `AdapterRequest`/`AdapterResponse` types for framework-independent HTTP handling
+- 16 route handlers mapping to existing service methods via `createRoutes(container)`
+- `resultToResponse()` mapper converting `Result<T, AppErrorUnion>` to HTTP status codes
+- Subpath exports: `./clients/svc/v1` and `./adapter`
+- jsonwebtoken as optional peer dependency for JWT-based auth
+
+### Changed
+
+- esbuild config uses `outbase` for correct directory structure in dist/
+- 544 tests passing across 44 suites (up from 457)
+
 ### Removed
 
 - Scaffold template files that were not part of goodneighbor-core (`user.client.ts`, `base.service.ts`, `user.service.ts`, `shared.types.ts`, `client/index.ts`)
 - Stale `BaseService` and `UserService` re-exports from `services/index.ts`
-
-### Added
-
-- Architecture design document (`local.goodneighbor-core.md`) — 8 services, source structure, migration path
-- Requirements document (`requirements.md`) — goals, functional/non-functional requirements, success criteria
-- Content entity & permission model design (`local.content-entity-model.md`) — refs hierarchy, semantic IDs, entity types
-- Search architecture design (`local.search-architecture.md`) — Algolia config, filters builder, indexing flow
-- Config & infrastructure design (`local.config-infrastructure.md`) — Zod schemas, env vars, Firebase/Algolia init
-
-- 7 milestone documents (M1-M7) covering full project roadmap
-- 29 task documents organized by milestone folder
-- Full progress.yaml with milestones, tasks, dependencies, and estimates
-
-### Changed
-
-- Adopt UID-based semantic IDs (`@uid:{firebaseUid}`) instead of username-based (`@/{username}`) to avoid fan-out on username changes
 
 ## [0.1.0] - 2026-02-28
 

@@ -421,9 +421,9 @@ packages:
           target: src/testing/index.ts
   acp-core:
     source: https://github.com/prmichaelsen/agent-context-protocol.git
-    package_version: 5.3.1
+    package_version: 5.7.1
     installed_at: 2026-02-28T19:14:45Z
-    updated_at: 2026-02-28T19:14:45Z
+    updated_at: 2026-03-01T16:52:40Z
     files:
       commands:
         - name: acp.clarification-create.md
@@ -468,4 +468,4 @@ packages:
         - name: design.template.md
         - name: requirements.template.md
 manifest_version: 1.0.0
-last_updated: 2026-02-28T19:34:02Z
+last_updated: 2026-03-01T16:52:40Z
