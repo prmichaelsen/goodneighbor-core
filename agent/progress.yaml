@@ -81,9 +81,9 @@ milestones:
 
   - id: M10
     title: AppClient & Web Adapter
-    status: not_started
+    status: in_progress
     tasks_total: 4
-    tasks_completed: 0
+    tasks_completed: 1
     estimated_days: 4
     dependencies: [M1, M5, M7, M8]
 
@@ -337,7 +337,7 @@ tasks:
   milestone_10:
     - id: 39
       title: WebSDKContext & WebSDKError
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-10-appclient-web-adapter/task-39-web-sdk-context.md
       estimated_hours: 3
       dependencies: [26]
