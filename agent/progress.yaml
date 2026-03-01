@@ -75,7 +75,7 @@ milestones:
     title: OpenAPI Spec, Type Generation & Health
     status: in_progress
     tasks_total: 4
-    tasks_completed: 1
+    tasks_completed: 2
     estimated_days: 3
     dependencies: [M1, M8]
 
@@ -317,7 +317,7 @@ tasks:
       dependencies: [1, 2, 3, 33]
     - id: 36
       title: Type generation pipeline
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-9-openapi-type-generation/task-36-type-generation.md
       estimated_hours: 3
       dependencies: [35]
