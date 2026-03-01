@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-01
+
+### Added
+- OpenAPI 3.0.3 specification at `docs/openapi.yaml` covering all 18 endpoints
+- Type generation pipeline with `openapi-typescript` (`npm run generate:types`)
+- CI validation script to detect stale generated types (`npm run generate:check`)
+- Convenience type aliases at `src/clients/svc/v1/types.ts`
+- Health resource (`GET /health`) and version resource (`GET /version`)
+- `HealthResource` on `SvcClient` with `check()` and `version()` methods
+- `healthCheck()` and `versionCheck()` adapter route handlers
+- `CreateRoutesOptions` for passing version/environment to health endpoints
+
+### Changed
+- All 6 client SDK resources now import types from generated aliases (`./types`) instead of hand-written types (`../../../types/`)
+- Comments resource uses `PaginatedCommentResult` (generated) instead of `PaginatedResult<Comment>` (generic)
+- Auth resource imports `VerifySessionResult` from generated types instead of defining locally
+
 ## [0.2.0] - 2026-03-01
 
 ### Added

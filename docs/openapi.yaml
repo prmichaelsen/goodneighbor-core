@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Good Neighbor API
-  version: 0.2.0
+  version: 0.3.0
   description: |
     REST API for the Good Neighbor community platform.
     This spec is the single source of truth for the API contract.

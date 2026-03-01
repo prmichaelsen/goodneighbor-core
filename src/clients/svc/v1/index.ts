@@ -10,12 +10,14 @@ import { createFeedsResource } from './feeds.js';
 import { createCommentsResource } from './comments.js';
 import { createSearchResource } from './search.js';
 import { createAuthResource } from './auth.js';
+import { createHealthResource } from './health.js';
 import type { PostsResource } from './posts.js';
 import type { ProfilesResource } from './profiles.js';
 import type { FeedsResource } from './feeds.js';
 import type { CommentsResource } from './comments.js';
 import type { SearchResource } from './search.js';
 import type { AuthResource } from './auth.js';
+import type { HealthResource } from './health.js';
 
 export interface SvcClient {
   posts: PostsResource;
@@ -24,6 +26,7 @@ export interface SvcClient {
   comments: CommentsResource;
   search: SearchResource;
   auth: AuthResource;
+  health: HealthResource;
 }
 
 /**
@@ -42,6 +45,7 @@ export function createSvcClient(config: HttpClientConfig): SvcClient {
     comments: createCommentsResource(http),
     search: createSearchResource(http),
     auth: createAuthResource(http),
+    health: createHealthResource(http),
   };
 }
 
@@ -54,3 +58,4 @@ export type { FeedsResource } from './feeds.js';
 export type { CommentsResource } from './comments.js';
 export type { SearchResource } from './search.js';
 export type { AuthResource, VerifySessionResult } from './auth.js';
+export type { HealthResource } from './health.js';

@@ -11,12 +11,20 @@ import { createFeed, getFeed, followFeed, unfollowFeed, submitToFeed } from './h
 import { createComment, listComments, deleteComment } from './handlers/comments';
 import { searchEntities } from './handlers/search';
 import { verifySession } from './handlers/auth';
+import { healthCheck, versionCheck } from './handlers/health';
+
+export interface CreateRoutesOptions {
+  version?: string;
+  environment?: string;
+}
 
 /**
  * Create all REST routes wired to services resolved from the container.
  * Returns an array of Route objects that can be mounted in any HTTP framework.
  */
-export function createRoutes(container: ServiceContainer): Route[] {
+export function createRoutes(container: ServiceContainer, options?: CreateRoutesOptions): Route[] {
+  const version = options?.version ?? '0.0.0';
+  const environment = options?.environment ?? 'unknown';
   const content = container.resolve(SERVICE_NAMES.CONTENT);
   const profile = container.resolve(SERVICE_NAMES.PROFILE);
   const feed = container.resolve(SERVICE_NAMES.FEED);
@@ -52,5 +60,9 @@ export function createRoutes(container: ServiceContainer): Route[] {
 
     // Auth
     { method: 'POST', path: '/api/v1/auth/verify', handler: verifySession(auth) },
+
+    // Health (public — no auth required)
+    { method: 'GET', path: '/health', handler: healthCheck() },
+    { method: 'GET', path: '/version', handler: versionCheck(version, environment) },
   ];
 }

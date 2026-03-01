@@ -1,6 +1,6 @@
 project:
   name: goodneighbor-core
-  version: 0.2.0
+  version: 0.3.0
   started: 2026-02-28
   status: in_progress
   description: |
@@ -73,9 +73,9 @@ milestones:
 
   - id: M9
     title: OpenAPI Spec, Type Generation & Health
-    status: in_progress
+    status: completed
     tasks_total: 4
-    tasks_completed: 3
+    tasks_completed: 4
     estimated_days: 3
     dependencies: [M1, M8]
 
@@ -329,7 +329,7 @@ tasks:
       dependencies: [36]
     - id: 38
       title: Health resource & endpoint
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-9-openapi-type-generation/task-38-health-endpoint.md
       estimated_hours: 2
       dependencies: [30, 33]
@@ -368,8 +368,8 @@ documentation:
 
 progress:
   planning: 100
-  implementation: 80
-  overall: 85
+  implementation: 90
+  overall: 92
 
 recent_work:
   - date: 2026-03-01
