@@ -3,7 +3,7 @@
 
 import type { HttpClient } from '../../http.js';
 import type { SdkResponse } from '../../response.js';
-import type { PublicProfile, ProfileFormData } from '../../../types/profile.types.js';
+import type { PublicProfile, ProfileFormData } from './types.js';
 
 export interface ProfilesResource {
   get(userId: string, uid: string): Promise<SdkResponse<PublicProfile>>;

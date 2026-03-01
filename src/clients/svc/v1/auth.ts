@@ -3,11 +3,9 @@
 
 import type { HttpClient } from '../../http.js';
 import type { SdkResponse } from '../../response.js';
+import type { VerifySessionResult } from './types.js';
 
-export interface VerifySessionResult {
-  uid: string;
-  claims: Record<string, unknown>;
-}
+export type { VerifySessionResult };
 
 export interface AuthResource {
   verifySession(sessionCookie: string): Promise<SdkResponse<VerifySessionResult>>;

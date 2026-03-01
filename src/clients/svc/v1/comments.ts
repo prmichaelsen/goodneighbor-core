@@ -3,12 +3,11 @@
 
 import type { HttpClient } from '../../http.js';
 import type { SdkResponse } from '../../response.js';
-import type { Comment, CreateCommentDto } from '../../../types/comment.types.js';
-import type { PaginatedResult } from '../../../types/pagination.types.js';
+import type { Comment, CreateCommentDto, PaginatedCommentResult } from './types.js';
 
 export interface CommentsResource {
   create(userId: string, input: CreateCommentDto): Promise<SdkResponse<Comment>>;
-  list(userId: string, postId: string, opts?: { cursor?: string; limit?: number }): Promise<SdkResponse<PaginatedResult<Comment>>>;
+  list(userId: string, postId: string, opts?: { cursor?: string; limit?: number }): Promise<SdkResponse<PaginatedCommentResult>>;
   delete(userId: string, id: string): Promise<SdkResponse<void>>;
 }
 

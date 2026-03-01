@@ -3,7 +3,7 @@
 
 import type { HttpClient } from '../../http.js';
 import type { SdkResponse } from '../../response.js';
-import type { SearchResultItem } from '../../../types/search.types.js';
+import type { SearchResultItem } from './types.js';
 
 export interface SearchResource {
   search(userId: string, input: { query: string; filters?: Record<string, unknown>; limit?: number }): Promise<SdkResponse<SearchResultItem[]>>;

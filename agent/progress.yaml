@@ -75,7 +75,7 @@ milestones:
     title: OpenAPI Spec, Type Generation & Health
     status: in_progress
     tasks_total: 4
-    tasks_completed: 2
+    tasks_completed: 3
     estimated_days: 3
     dependencies: [M1, M8]
 
@@ -323,7 +323,7 @@ tasks:
       dependencies: [35]
     - id: 37
       title: Refactor resources to generated types
-      status: not_started
+      status: completed
       file: agent/tasks/milestone-9-openapi-type-generation/task-37-refactor-to-generated-types.md
       estimated_hours: 3
       dependencies: [36]

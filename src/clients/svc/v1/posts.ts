@@ -3,8 +3,7 @@
 
 import type { HttpClient } from '../../http.js';
 import type { SdkResponse } from '../../response.js';
-import type { CreatePostDto, PostViewModel } from '../../../types/post.types.js';
-import type { DbPost } from '../../../types/content-entity.types.js';
+import type { CreatePostDto, PostViewModel, DbPost } from './types.js';
 
 export interface PostsResource {
   create(userId: string, input: CreatePostDto): Promise<SdkResponse<DbPost>>;

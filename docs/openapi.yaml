@@ -334,13 +334,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [postId, content]
-              properties:
-                postId:
-                  type: string
-                content:
-                  type: string
+              $ref: '#/components/schemas/CreateCommentDto'
       responses:
         '201':
           description: Comment created
@@ -1259,6 +1253,15 @@ components:
           type: string
 
     # ── Comment Schemas ──────────────────────────────────────────
+    CreateCommentDto:
+      type: object
+      required: [postId, content]
+      properties:
+        postId:
+          type: string
+        content:
+          type: string
+
     Comment:
       type: object
       required:

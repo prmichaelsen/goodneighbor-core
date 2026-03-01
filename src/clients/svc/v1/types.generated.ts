@@ -491,6 +491,10 @@ export interface components {
             website?: string;
             username?: string;
         };
+        CreateCommentDto: {
+            postId: string;
+            content: string;
+        };
         Comment: {
             id: string;
             postId: string;
@@ -1016,10 +1020,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": {
-                    postId: string;
-                    content: string;
-                };
+                "application/json": components["schemas"]["CreateCommentDto"];
             };
         };
         responses: {

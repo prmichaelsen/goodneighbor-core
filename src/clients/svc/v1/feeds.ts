@@ -3,8 +3,7 @@
 
 import type { HttpClient } from '../../http.js';
 import type { SdkResponse } from '../../response.js';
-import type { CreateFeedDto, FeedViewModel } from '../../../types/feed.types.js';
-import type { DbFeed } from '../../../types/content-entity.types.js';
+import type { CreateFeedDto, FeedViewModel, DbFeed } from './types.js';
 
 export interface FeedsResource {
   create(userId: string, input: CreateFeedDto): Promise<SdkResponse<DbFeed>>;

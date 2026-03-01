@@ -21,6 +21,7 @@ export type PublicProfile = components['schemas']['PublicProfile'];
 export type ProfileFormData = components['schemas']['ProfileFormData'];
 
 // ── Comment Types ─────────────────────────────────────────────────────
+export type CreateCommentDto = components['schemas']['CreateCommentDto'];
 export type Comment = components['schemas']['Comment'];
 export type PaginatedCommentResult = components['schemas']['PaginatedCommentResult'];
 
